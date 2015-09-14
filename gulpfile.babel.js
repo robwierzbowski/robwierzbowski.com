@@ -68,10 +68,7 @@ gulp.task('styles', () => {
   ];
 
   // For best performance, don't add Sass partials to `gulp.src`
-  return gulp.src([
-    'app/styles/**/*.scss',
-    'app/styles/**/*.css'
-  ])
+  return gulp.src('app/styles/**/*.scss')
     .pipe($.newer({dest: '.tmp/styles', ext: '.css'}))
     .pipe($.sourcemaps.init())
     .pipe($.sass({
@@ -80,22 +77,28 @@ gulp.task('styles', () => {
     .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
     .pipe($.sourcemaps.write())
     .pipe(gulp.dest('.tmp/styles'))
+
     // Concatenate and minify styles
     .pipe($.if('*.css', $.minifyCss()))
-    .pipe($.sourcemaps.write('.'))
+
+    .pipe($.sourcemaps.write('.')) // Why two sourcemaps? Because of CSS I'm guessing.
     .pipe(gulp.dest('dist/styles'))
+
     .pipe($.size({title: 'styles'}));
 });
 
 // Concatenate and minify JavaScript
 gulp.task('scripts', () =>
   gulp.src([
+    // TODO: Then we should remove useref entirely.
+
     // Note: Since we are not using useref in the scripts build pipeline,
     //       you need to explicitly list your scripts here in the right order
     //       to be correctly concatenated
     './app/scripts/main.js'
     // Other scripts
   ])
+
     .pipe($.concat('main.min.js'))
     .pipe($.uglify({preserveComments: 'some'}))
     // Output files
@@ -200,6 +203,8 @@ gulp.task('pagespeed', cb =>
 // live reload to work as expected when serving from the 'app' directory.
 gulp.task('generate-service-worker', cb => {
   const rootDir = 'dist';
+
+  // TODO: Highlighting for ES2015?
 
   swPrecache({
     // Used to avoid cache conflicts when serving on localhost.
