@@ -1,9 +1,5 @@
-// This gulpfile makes use of new JavaScript features.
-// Babel handles this without us having to do anything.
-// You can read more about the new JavaScript features here:
-// https://babeljs.io/docs/learn-es2015/
+'use strict'; // Do we need this for ES2015?
 
-'use strict';
 import fs from 'fs';
 import path from 'path';
 import gulp from 'gulp';
