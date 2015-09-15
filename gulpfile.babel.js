@@ -17,21 +17,21 @@ const reload = browserSync.reload;
 // Lint JavaScript
 gulp.task('jshint', () =>
   gulp.src('app/scripts/**/*.js')
-    .pipe(reload({stream: true, once: true}))
-    .pipe($.jshint())
-    .pipe($.jshint.reporter('jshint-stylish'))
-    .pipe($.if(!browserSync.active, $.jshint.reporter('fail')))
+  .pipe(reload({stream: true, once: true}))
+  .pipe($.jshint())
+  .pipe($.jshint.reporter('jshint-stylish'))
+  .pipe($.if(!browserSync.active, $.jshint.reporter('fail')))
 );
 
 // Optimize images
 gulp.task('images', () =>
   gulp.src('app/images/**/*')
-    .pipe($.cache($.imagemin({
-      progressive: true,
-      interlaced: true
-    })))
-    .pipe(gulp.dest('dist/images'))
-    .pipe($.size({title: 'images'}))
+  .pipe($.cache($.imagemin({
+    progressive: true,
+    interlaced: true
+  })))
+  .pipe(gulp.dest('dist/images'))
+  .pipe($.size({title: 'images'}))
 );
 
 // Copy all files at the root level (app)
@@ -42,15 +42,16 @@ gulp.task('copy', () =>
     'node_modules/apache-server-configs/dist/.htaccess'
   ], {
     dot: true
-  }).pipe(gulp.dest('dist'))
-    .pipe($.size({title: 'copy'}))
+  })
+  .pipe(gulp.dest('dist'))
+  .pipe($.size({title: 'copy'}))
 );
 
 // Copy web fonts to dist
 gulp.task('fonts', () =>
   gulp.src(['app/fonts/**'])
-    .pipe(gulp.dest('dist/fonts'))
-    .pipe($.size({title: 'fonts'}))
+  .pipe(gulp.dest('dist/fonts'))
+  .pipe($.size({title: 'fonts'}))
 );
 
 // Compile and automatically prefix stylesheets
@@ -69,41 +70,38 @@ gulp.task('styles', () => {
 
   // For best performance, don't add Sass partials to `gulp.src`
   return gulp.src('app/styles/**/*.scss')
-    .pipe($.newer({dest: '.tmp/styles', ext: '.css'}))
-    .pipe($.sourcemaps.init())
-    .pipe($.sass({
-      precision: 10
-    }).on('error', $.sass.logError))
-    .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
-    .pipe($.sourcemaps.write())
-    .pipe(gulp.dest('.tmp/styles'))
+  .pipe($.newer({dest: '.tmp/styles', ext: '.css'}))
+  .pipe($.sourcemaps.init())
+  .pipe($.sass({
+    precision: 10
+  }).on('error', $.sass.logError))
+  .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
+  .pipe($.sourcemaps.write())
+  .pipe(gulp.dest('.tmp/styles'))
 
-    // Concatenate and minify styles
-    .pipe($.if('*.css', $.minifyCss()))
+  // Concatenate and minify styles
+  .pipe($.if('*.css', $.minifyCss()))
 
-    .pipe($.sourcemaps.write('.')) // Why two sourcemaps? Because of CSS I'm guessing.
-    .pipe(gulp.dest('dist/styles'))
+  .pipe($.sourcemaps.write('.')) // Why two sourcemaps? Because of CSS I'm guessing.
+  .pipe(gulp.dest('dist/styles'))
 
-    .pipe($.size({title: 'styles'}));
+  .pipe($.size({title: 'styles'}));
 });
 
 // Concatenate and minify JavaScript
 gulp.task('scripts', () =>
   gulp.src([
-    // TODO: Then we should remove useref entirely.
-
+    // TODO: Then should I remove useref entirely?
     // Note: Since we are not using useref in the scripts build pipeline,
     //       you need to explicitly list your scripts here in the right order
     //       to be correctly concatenated
     './app/scripts/main.js'
-    // Other scripts
   ])
-
-    .pipe($.concat('main.min.js'))
-    .pipe($.uglify({preserveComments: 'some'}))
-    // Output files
-    .pipe(gulp.dest('dist/scripts'))
-    .pipe($.size({title: 'scripts'}))
+  .pipe($.concat('main.min.js'))
+  .pipe($.uglify({preserveComments: 'some'}))
+  // Output files
+  .pipe(gulp.dest('dist/scripts'))
+  .pipe($.size({title: 'scripts'}))
 );
 
 // Scan your HTML for assets & optimize them
@@ -111,36 +109,38 @@ gulp.task('html', () => {
   const assets = $.useref.assets({searchPath: '{.tmp,app}'});
 
   return gulp.src('app/**/*.html')
-    .pipe(assets)
-    // Remove any unused CSS
-    // Note: If not using the Style Guide, you can delete it from
-    //       the next line to only include styles your project uses.
-    .pipe($.if('*.css', $.uncss({
-      html: [
-        'app/index.html'
-      ],
-      // CSS Selectors for UnCSS to ignore
-      ignore: [
-        /.navdrawer-container.open/,
-        /.app-bar.open/
-      ]
-    })))
+  .pipe(assets)
+  // Remove any unused CSS
+  // Note: If not using the Style Guide, you can delete it from
+  //       the next line to only include styles your project uses.
+  .pipe($.if('*.css', $.uncss({
+    html: [
+      'app/index.html'
+    ],
+    // CSS Selectors for UnCSS to ignore
+    ignore: [
+      /.navdrawer-container.open/,
+      /.app-bar.open/
+    ]
+  })))
 
-    // Concatenate and minify styles
-    // In case you are still using useref build blocks
-    .pipe($.if('*.css', $.minifyCss()))
-    .pipe(assets.restore())
-    .pipe($.useref())
+  // Concatenate and minify styles
+  // In case you are still using useref build blocks
+  .pipe($.if('*.css', $.minifyCss()))
+  .pipe(assets.restore())
+  .pipe($.useref())
 
-    // Minify any HTML
-    .pipe($.if('*.html', $.minifyHtml()))
-    // Output files
-    .pipe(gulp.dest('dist'))
-    .pipe($.size({title: 'html'}));
+  // Minify any HTML
+  .pipe($.if('*.html', $.minifyHtml()))
+  // Output files
+  .pipe(gulp.dest('dist'))
+  .pipe($.size({title: 'html'}));
 });
 
 // Clean output directory
-gulp.task('clean', cb => del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}, cb));
+gulp.task('clean', (done) => {
+  del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}, done);
+});
 
 // Serve and Watch
 gulp.task('serve', ['styles'], () => {
@@ -171,64 +171,62 @@ gulp.task('serve:dist', ['default'], () =>
 );
 
 // Build production files, the default task
-gulp.task('default', ['clean'], cb =>
+gulp.task('default', ['clean'], (done) => {
   runSequence(
     'styles',
     ['jshint', 'html', 'scripts', 'images', 'fonts', 'copy'],
     'generate-service-worker',
-    cb
-  )
-);
+    done
+  );
+});
 
 // Run PageSpeed Insights
-gulp.task('pagespeed', cb =>
+gulp.task('pagespeed', (done) => {
   // Update the below URL to the public URL of your site
   pagespeed('example.com', {
     strategy: 'mobile',
     // By default we use the PageSpeed Insights free (no API key) tier.
     // Use a Google Developer API key if you have one: http://goo.gl/RkN0vE
     // key: 'YOUR_API_KEY'
-  }, cb)
-);
+  }, done);
+});
 
 // See http://www.html5rocks.com/en/tutorials/service-worker/introduction/ for
 // an in-depth explanation of what service workers are and why you should care.
 // Generate a service worker file that will provide offline functionality for
 // local resources. This should only be done for the 'dist' directory, to allow
 // live reload to work as expected when serving from the 'app' directory.
-gulp.task('generate-service-worker', cb => {
+gulp.task('generate-service-worker', (done) => {
   const rootDir = 'dist';
-
-  // TODO: Highlighting for ES2015?
 
   swPrecache({
     // Used to avoid cache conflicts when serving on localhost.
     cacheId: pkg.name || 'web-starter-kit',
     staticFileGlobs: [
-      // Add/remove glob patterns to match your directory setup.
       `${rootDir}/fonts/**/*.woff`,
       `${rootDir}/images/**/*`,
       `${rootDir}/scripts/**/*.js`,
       `${rootDir}/styles/**/*.css`,
       `${rootDir}/*.{html,json}`
     ],
+
     // Translates a static file path to the relative URL that it's served from.
     stripPrefix: path.join(rootDir, path.sep)
   }, (err, swFileContents) => {
     if (err) {
-      cb(err);
+      done(err);
       return;
     }
 
     const filepath = path.join(rootDir, 'service-worker.js');
 
-    fs.writeFile(filepath, swFileContents, err => {
+    fs.writeFile(filepath, swFileContents, (err) => {
       if (err) {
-        cb(err);
+        done(err);
         return;
       }
 
-      cb();
+      done();
     });
   });
 });
