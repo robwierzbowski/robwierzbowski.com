@@ -14,6 +14,8 @@ import pkg from './package.json';
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
 
+// -- On serve -- //
+
 // Lint JavaScript
 gulp.task('jshint', () =>
   gulp.src('app/scripts/**/*.js')
@@ -21,37 +23,6 @@ gulp.task('jshint', () =>
   .pipe($.jshint())
   .pipe($.jshint.reporter('jshint-stylish'))
   .pipe($.if(!browserSync.active, $.jshint.reporter('fail')))
-);
-
-// Optimize images
-gulp.task('images', () =>
-  gulp.src('app/images/**/*')
-  .pipe($.cache($.imagemin({
-    progressive: true,
-    interlaced: true
-  })))
-  .pipe(gulp.dest('dist/images'))
-  .pipe($.size({title: 'images'}))
-);
-
-// Copy all files at the root level (app)
-gulp.task('copy', () =>
-  gulp.src([
-    'app/*',
-    '!app/*.html',
-    'node_modules/apache-server-configs/dist/.htaccess'
-  ], {
-    dot: true
-  })
-  .pipe(gulp.dest('dist'))
-  .pipe($.size({title: 'copy'}))
-);
-
-// Copy web fonts to dist
-gulp.task('fonts', () =>
-  gulp.src(['app/fonts/**'])
-  .pipe(gulp.dest('dist/fonts'))
-  .pipe($.size({title: 'fonts'}))
 );
 
 // Compile and automatically prefix stylesheets
@@ -87,6 +58,53 @@ gulp.task('styles', () => {
 
   .pipe($.size({title: 'styles'}));
 });
+
+// Serve and Watch
+gulp.task('serve', ['styles'], () => {
+  browserSync({
+    notify: false,
+    logPrefix: 'BrowserSync',
+    server: ['.tmp', 'app']
+  });
+
+  gulp.watch('app/**/*.html', reload);
+  gulp.watch('app/styles/**/*.scss', ['styles', reload]);
+  gulp.watch('app/scripts/**/*.js', ['jshint']);
+  gulp.watch('app/images/**/*', reload);
+});
+
+// -- On build -- //
+
+// Optimize images
+gulp.task('images', () =>
+  gulp.src('app/images/**/*')
+  .pipe($.cache($.imagemin({
+    progressive: true,
+    interlaced: true
+  })))
+  .pipe(gulp.dest('dist/images'))
+  .pipe($.size({title: 'images'}))
+);
+
+// Copy all files at the root level (app)
+gulp.task('copy', () =>
+  gulp.src([
+    'app/*',
+    '!app/*.jade',
+    'node_modules/apache-server-configs/dist/.htaccess'
+  ], {
+    dot: true
+  })
+  .pipe(gulp.dest('dist'))
+  .pipe($.size({title: 'copy'}))
+);
+
+// Copy web fonts to dist
+gulp.task('fonts', () =>
+  gulp.src(['app/fonts/**'])
+  .pipe(gulp.dest('dist/fonts'))
+  .pipe($.size({title: 'fonts'}))
+);
 
 // Concatenate and minify JavaScript
 gulp.task('scripts', () =>
@@ -140,20 +158,6 @@ gulp.task('html', () => {
 // Clean output directory
 gulp.task('clean', (done) => {
   del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}, done);
-});
-
-// Serve and Watch
-gulp.task('serve', ['styles'], () => {
-  browserSync({
-    notify: false,
-    logPrefix: 'BrowserSync',
-    server: ['.tmp', 'app']
-  });
-
-  gulp.watch('app/**/*.html', reload);
-  gulp.watch('app/styles/**/*.scss', ['styles', reload]);
-  gulp.watch('app/scripts/**/*.js', ['jshint']);
-  gulp.watch('app/images/**/*', reload);
 });
 
 // Build and serve the output from the dist build
