@@ -201,7 +201,7 @@ gulp.task('generate-service-worker', (done) => {
 
   swPrecache({
     // Used to avoid cache conflicts when serving on localhost.
-    cacheId: pkg.name || 'web-starter-kit',
+    cacheId: pkg.name,
     staticFileGlobs: [
       `${rootDir}/fonts/**/*.woff`,
       `${rootDir}/images/**/*`,
