@@ -59,21 +59,33 @@ gulp.task('styles', () => {
   .pipe($.size({title: 'styles'}));
 });
 
+// Compile templates
+gulp.task('jade', () =>
+  gulp.src('app/**/*.jade')
+  .pipe($.jade({
+    pretty: true
+  }))
+  .pipe(gulp.dest('.tmp'))
+);
+
 // Serve and Watch
-gulp.task('serve', ['styles'], () => {
+gulp.task('serve', ['styles', 'jade'], () => {
   browserSync({
     notify: false,
     logPrefix: 'BrowserSync',
     server: ['.tmp', 'app']
   });
 
-  gulp.watch('app/**/*.html', reload);
+  gulp.watch('app/**/*.jade', ['jade', reload]);
   gulp.watch('app/styles/**/*.scss', ['styles', reload]);
   gulp.watch('app/scripts/**/*.js', ['jshint']);
   gulp.watch('app/images/**/*', reload);
 });
 
 // -- On build -- //
+
+// NOTE! Introduced breaking build changes by introducing Jade.
+// Don't bother to build for now.
 
 // Optimize images
 gulp.task('images', () =>
