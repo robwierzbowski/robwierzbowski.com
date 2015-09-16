@@ -38,15 +38,20 @@ gulp.task('styles', () => {
   }).on('error', $.sass.logError))
   .pipe($.autoprefixer(SUPPORTED_BROWSERS))
   .pipe($.sourcemaps.write())
-  .pipe(gulp.dest('.tmp/styles'))
+  .pipe(gulp.dest('.tmp/styles'));
 
-  // Concatenate and minify styles
-  .pipe($.if('*.css', $.minifyCss()))
+  // Do we only need the writing above for gulp-newer? Sounds like we should use
+  // a different caching style and avoid writing to tmp.
 
-  .pipe($.sourcemaps.write('.')) // Why two sourcemaps? Because of CSS I'm guessing.
-  .pipe(gulp.dest('dist/styles'))
+  // TEMP: Remove concatenation / minification, since no building right now.
+  // Minification and reporting can happen only on build; no need for that info
+  // every change.
 
-  .pipe($.size({title: 'styles'}));
+  // // Concatenate and minify styles
+  // .pipe($.if('*.css', $.minifyCss()))
+  // .pipe($.sourcemaps.write('.')) // Why two sourcemaps? Because of CSS I'm guessing.
+  // .pipe(gulp.dest('dist/styles'))
+  // .pipe($.size({title: 'styles'}));
 });
 
 // Compile templates
