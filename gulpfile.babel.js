@@ -39,19 +39,6 @@ gulp.task('styles', () => {
   .pipe($.autoprefixer(SUPPORTED_BROWSERS))
   .pipe($.sourcemaps.write())
   .pipe(gulp.dest('.tmp/styles'));
-
-  // Do we only need the writing above for gulp-newer? Sounds like we should use
-  // a different caching style and avoid writing to tmp.
-
-  // TEMP: Remove concatenation / minification, since no building right now.
-  // Minification and reporting can happen only on build; no need for that info
-  // every change.
-
-  // // Concatenate and minify styles
-  // .pipe($.if('*.css', $.minifyCss()))
-  // .pipe($.sourcemaps.write('.')) // Why two sourcemaps? Because of CSS I'm guessing.
-  // .pipe(gulp.dest('dist/styles'))
-  // .pipe($.size({title: 'styles'}));
 });
 
 // Compile templates
@@ -81,6 +68,16 @@ gulp.task('serve', ['styles', 'jade'], () => {
 
 // NOTE! Introduced breaking build changes by introducing Jade.
 // Don't bother to build for now.
+
+// TEMP: Remove concatenation / minification of styles, since no building right
+// now. Minification and reporting can happen only on build; no need for that
+// info every change.
+
+// // Concatenate and minify styles
+// .pipe($.if('*.css', $.minifyCss()))
+// .pipe($.sourcemaps.write('.')) // Why two sourcemaps? Because of CSS I'm guessing.
+// .pipe(gulp.dest('dist/styles'))
+// .pipe($.size({title: 'styles'}));
 
 // Optimize images
 gulp.task('images', () =>
