@@ -1,0 +1,19 @@
+doctype html
+html(lang="en")
+  head
+    block head
+      include ../partials/head.jade
+
+  body
+    block header
+      include ../partials/header.jade
+
+    main
+      block title
+      block content
+
+    block footer
+
+    block closer
+      include ../partials/scripts.jade
+      include ../partials/ga.jade
