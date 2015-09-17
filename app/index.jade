@@ -1,17 +1,8 @@
-doctype html
-html(lang="en")
-  include ./partials/head.jade
+extends ./templates/layouts/standard
 
-  body
-    // build:js(app/) ../../scripts/main.min.js
-    script(src="scripts/main.js")
-    // endbuild
+block title
+  h1 Rob Wierzbowski
 
-    h1 Rob Wierzbowski
-
-    section
-      include:markdown-it ./content/test.md
-
-    include ./partials/ga.jade
-
-    //- Built with love using Web Starter Kit
+block content
+  section
+    include:markdown-it ./content/test.md

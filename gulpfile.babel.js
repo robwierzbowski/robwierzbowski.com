@@ -42,7 +42,7 @@ gulp.task('styles', () => {
 
 // Compile templates
 gulp.task('jade', () =>
-  gulp.src('app/**/*.jade')
+  gulp.src('app/index.jade')
   .pipe($.jade({
     pretty: true
   }))
