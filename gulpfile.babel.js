@@ -29,12 +29,12 @@ gulp.task('styles', () => {
   const SUPPORTED_BROWSERS = ['last 2 versions', '> 5%'];
 
   // For best performance, don't add Sass partials to `gulp.src`
-  return gulp.src('app/styles/**/*.scss')
-  .pipe($.newer({dest: '.tmp/styles', ext: '.css'}))
+  return gulp.src('app/styles/main.scss')
   .pipe($.sourcemaps.init())
   .pipe($.sass({
     precision: 10
   }).on('error', $.sass.logError))
+  .pipe($.changed('.tmp/styles', {hasChanged: $.changed.compareSha1Digest}))
   .pipe($.autoprefixer(SUPPORTED_BROWSERS))
   .pipe($.sourcemaps.write())
   .pipe(gulp.dest('.tmp/styles'));
