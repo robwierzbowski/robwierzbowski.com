@@ -1,33 +1,19 @@
-/*! sanitize.css v2.0.0 | CC0 1.0 Public Domain | github.com/jonathantneal/sanitize.css */
+// Element style rules
+// Based on sanitize.css v2.0.0, github.com/jonathantneal/sanitize.css
 
-$root-box-sizing: border-box !default;
-$root-cursor: default !default;
-$root-font-family: sans-serif !default;
-$root-font-size: 100% !default;
-$root-line-height: 1.5 !default;
-$root-text-rendering: optimizeLegibility !default;
+$background-color: #fff;
+$type-color: #242424;
 
-$html-background-color: #FFFFFF !default;
-$html-color: #000000 !default;
-$anchor-text-decoration: none !default;
-$form-element-background-color: transparent !default;
-$form-element-min-height: if(unitless($root-line-height), #{$root-line-height}em, if(unit($root-line-height) != '%', $root-line-height, null)) !default;
-$media-element-vertical-align: middle !default;
-$monospace-font-family: monospace !default;
-$nav-list-style: none !default;
-$selection-background-color: #B3D4FC !default;
-$selection-color: invert($selection-background-color) !default;
-$selection-text-shadow: none !default;
-$small-font-size: 75% !default;
-$table-border-collapse: collapse !default;
-$table-border-spacing: 0 !default;
-$textarea-resize: vertical !default;
+$root-font-family: "Charter BT", serif;
+$root-font-size: 112.5%; // 18px
+$root-line-height: 1.5;
 
+$monospace-font-family: monospace;
 
+$selection-background-color: #B3D4FC;
+$selection-color: white;
 
-/*
- * Normalization
- */
+// * Normalization
 
 :root {
   -ms-overflow-style: -ms-autohiding-scrollbar; // Edge 12+, Internet Explorer 11-
@@ -79,7 +65,7 @@ progress {
 }
 
 small {
-  font-size: $small-font-size; // All browsers
+  font-size: 75%; // All browsers
 }
 
 template {
@@ -90,76 +76,62 @@ textarea {
   overflow: auto; // Edge 12+, Internet Explorer 11-
 }
 
+// Not sure I want to specify the standard appearance of selects
+// select {
+//   -moz-appearance: none;    // Firefox 40+
+//   -webkit-appearance: none; // Chrome 45+
+
+//   &::-ms-expand {
+//     display: none;        // Edge 12+, Internet Explorer 11-
+//   }
+
+//   &::-ms-value {
+//     color: currentColor;  // Edge 12+, Internet Explorer 11-
+//   }
+// }
+
 [hidden] {
   display: none; // Internet Explorer 10-
 }
 
-/*
- * Universal inheritance
- */
-
-*,
-::before,
-::after {
-  box-sizing: inherit;
-}
-
-* {
-  font-size: inherit;
-  line-height: inherit;
-}
-
-::before,
-::after {
-  text-decoration: inherit;
-  vertical-align: inherit;
-}
-
-
-
-/*
- * Opinionated defaults
- */
-
-// specify the border style and width of all elements
-
-*,
-::before,
-::after {
-  border-style: solid;
-  border-width: 0;
-}
-
-// remove the margin and padding of all elements
+// * Opinionated defaults
 
 * {
   margin: 0;
   padding: 0;
 }
 
-// specify the root styles of the document
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
 
 :root {
-  box-sizing: $root-box-sizing;
-  cursor: $root-cursor;
+  cursor: default;
   font: #{$root-font-size}/#{$root-line-height} $root-font-family;
-  text-rendering: $root-text-rendering;
 }
-
-// specify the background color of html
 
 html {
-  background-color: $html-background-color;
-  color: $html-color;
+  background-color: $background-color;
+  color: $type-color;
 }
 
-// specify the text decoration of anchors
+::selection {
+  background-color: $selection-background-color; // required when declaring ::selection
+  color: $selection-color;
+  text-shadow: none;
+}
 
+// TODO: Complete text reset
 a {
-  text-decoration: $anchor-text-decoration;
+  text-decoration: none;
 }
 
-// specify the alignment of media elements
+nav ol,
+nav ul {
+  list-style: none;
+}
 
 audio,
 canvas,
@@ -167,19 +139,8 @@ iframe,
 img,
 svg,
 video {
-  vertical-align: $media-element-vertical-align;
+  vertical-align: middle;
 }
-
-// specify the background color of form elements
-
-button,
-input,
-select,
-textarea {
-  background-color: $form-element-background-color;
-}
-
-// specify the inherited color and font of form elements
 
 button,
 input,
@@ -189,9 +150,8 @@ textarea {
   font-family: inherit;
   font-style: inherit;
   font-weight: inherit;
+  background-color: transparent;
 }
-
-// specify the minimum height of form elements
 
 button,
 [type="button"],
@@ -212,10 +172,12 @@ button,
 [type="week"],
 select,
 textarea {
-  min-height: $form-element-min-height;
+  min-height: #{$root-line-height}em;
 }
 
-// specify the font family of code elements
+textarea {
+  resize: vertical;
+}
 
 code,
 kbd,
@@ -224,69 +186,27 @@ samp {
   font-family: $monospace-font-family, monospace;
 }
 
-// specify the list style of nav lists
-
-nav ol,
-nav ul {
-  list-style: $nav-list-style;
-}
-
-// specify the standard appearance of selects
-
-select {
-  -moz-appearance: none;    // Firefox 40+
-  -webkit-appearance: none; // Chrome 45+
-
-  &::-ms-expand {
-    display: none;        // Edge 12+, Internet Explorer 11-
-  }
-
-  &::-ms-value {
-    color: currentColor;  // Edge 12+, Internet Explorer 11-
-  }
-}
-
-// specify the border styling of tables
-
 table {
-  border-collapse: $table-border-collapse;
-  border-spacing: $table-border-spacing;
-}
-
-// specify the resizability of textareas
-
-textarea {
-  resize: $textarea-resize;
-}
-
-// specify the background color, font color and drop shadow of text selections
-
-::selection {
-  background-color: $selection-background-color; // required when declaring ::selection
-  color: $selection-color;
-  text-shadow: $selection-text-shadow;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
 // specify the progress cursor of updating elements
-
 [aria-busy="true"] {
   cursor: progress;
 }
 
 // specify the pointer cursor of trigger elements
-
 [aria-controls] {
   cursor: pointer;
 }
 
 // specify the unstyled cursor of disabled, not-editable, or otherwise inoperable elements
-
 [aria-disabled] {
   cursor: default;
 }
 
 // specify the style of visually hidden yet accessible elements
-
 [hidden][aria-hidden="false"] {
   clip: rect(0 0 0 0);
   display: inherit;
