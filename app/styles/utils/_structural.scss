@@ -1,0 +1,9 @@
+// The glorious micro clearfix.
+@mixin clearfix() {
+  &:before,
+  &:after {
+    display: table;
+    content: " ";
+    clear: both;
+  }
+}
