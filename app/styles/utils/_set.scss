@@ -1,6 +1,8 @@
-// Element style rules
-// Based on sanitize.css v2.0.0, github.com/jonathantneal/sanitize.css
+// Normalize and set default element style rules
+// Based on sanitize.css v2.0.0
+// github.com/jonathantneal/sanitize.css
 
+// TODO: move variables into a vars partial
 $background-color: #fff;
 $type-color: #242424;
 
@@ -18,7 +20,7 @@ $selection-color: white;
 :root {
   -ms-overflow-style: -ms-autohiding-scrollbar; // Edge 12+, Internet Explorer 11-
   overflow-y: scroll; // All browsers without overlaying scrollbars
-  -webkit-text-size-adjust: 100%; // iOS 8+
+  text-size-adjust: 100%; // Prevent text resizing on orientation change without disabling zoom
 }
 
 audio:not([controls]) {
@@ -64,10 +66,6 @@ progress {
   display: inline-block; // Internet Explorer 11-, Windows Phone 8.1+
 }
 
-small {
-  font-size: 75%; // All browsers
-}
-
 template {
   display: none; // Android 4.3-, Internet Explorer 11-, iOS 7-, Safari 7-, Windows Phone 8.1+
 }
@@ -76,30 +74,24 @@ textarea {
   overflow: auto; // Edge 12+, Internet Explorer 11-
 }
 
-// Not sure I want to specify the standard appearance of selects
-// select {
-//   -moz-appearance: none;    // Firefox 40+
-//   -webkit-appearance: none; // Chrome 45+
+select {
+  -moz-appearance: none;    // Firefox 40+
+  -webkit-appearance: none; // Chrome 45+
 
-//   &::-ms-expand {
-//     display: none;        // Edge 12+, Internet Explorer 11-
-//   }
+  &::-ms-expand {
+    display: none;        // Edge 12+, Internet Explorer 11-
+  }
 
-//   &::-ms-value {
-//     color: currentColor;  // Edge 12+, Internet Explorer 11-
-//   }
-// }
+  &::-ms-value {
+    color: currentColor;  // Edge 12+, Internet Explorer 11-
+  }
+}
 
 [hidden] {
   display: none; // Internet Explorer 10-
 }
 
 // * Opinionated defaults
-
-* {
-  margin: 0;
-  padding: 0;
-}
 
 *,
 ::before,
@@ -108,8 +100,17 @@ textarea {
 }
 
 :root {
-  cursor: default;
   font: #{$root-font-size}/#{$root-line-height} $root-font-family;
+}
+
+::selection {
+  background-color: $selection-background-color;
+  color: $selection-color;
+  text-shadow: none;
+}
+
+:focus {
+  outline: none;
 }
 
 html {
@@ -117,20 +118,8 @@ html {
   color: $type-color;
 }
 
-::selection {
-  background-color: $selection-background-color; // required when declaring ::selection
-  color: $selection-color;
-  text-shadow: none;
-}
-
-// TODO: Complete text reset
-a {
-  text-decoration: none;
-}
-
-nav ol,
-nav ul {
-  list-style: none;
+body {
+  margin: 0;
 }
 
 audio,
@@ -140,17 +129,6 @@ img,
 svg,
 video {
   vertical-align: middle;
-}
-
-button,
-input,
-select,
-textarea {
-  color: inherit;
-  font-family: inherit;
-  font-style: inherit;
-  font-weight: inherit;
-  background-color: transparent;
 }
 
 button,
@@ -176,19 +154,9 @@ textarea {
 }
 
 textarea {
+  overflow: auto;
+  vertical-align: top;
   resize: vertical;
-}
-
-code,
-kbd,
-pre,
-samp {
-  font-family: $monospace-font-family, monospace;
-}
-
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
 }
 
 // specify the progress cursor of updating elements
@@ -215,4 +183,34 @@ table {
   &:focus {
     clip: auto;
   }
+}
+
+// TODO: move these to a content text set partial
+code,
+kbd,
+pre,
+samp {
+  font-family: $monospace-font-family, monospace;
+}
+
+pre {
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+// Set sub, sup without affecting line-height: gist.github.com/413930
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+}
+
+sup {
+  top: -0.5em;
+}
+
+sub {
+  bottom: -0.25em;
 }
