@@ -99,23 +99,8 @@ select {
   box-sizing: border-box;
 }
 
-:root {
-  font: #{$root-font-size}/#{$root-line-height} $root-font-family;
-}
-
-::selection {
-  background-color: $selection-background-color;
-  color: $selection-color;
-  text-shadow: none;
-}
-
 :focus {
   outline: none;
-}
-
-html {
-  background-color: $background-color;
-  color: $type-color;
 }
 
 body {
@@ -159,6 +144,12 @@ textarea {
   resize: vertical;
 }
 
+pre {
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
 // specify the progress cursor of updating elements
 [aria-busy="true"] {
   cursor: progress;
@@ -185,18 +176,30 @@ textarea {
   }
 }
 
-// TODO: move these to a content text set partial
+// * Site specific
+
+:root {
+  font: #{$root-font-size}/#{$root-line-height} $root-font-family;
+}
+
+::selection {
+  background-color: $selection-background-color;
+  color: $selection-color;
+  text-shadow: none;
+}
+
+html {
+  background-color: $background-color;
+  color: $type-color;
+}
+
+// TODO: move these to a scoped content text set partial
+
 code,
 kbd,
 pre,
 samp {
   font-family: $monospace-font-family, monospace;
-}
-
-pre {
-  white-space: pre;
-  white-space: pre-wrap;
-  word-wrap: break-word;
 }
 
 // Set sub, sup without affecting line-height: gist.github.com/413930
