@@ -5,14 +5,11 @@
 // TODO: move variables into a vars partial
 $background-color: #fff;
 $type-color: #242424;
-
 $root-font-family: "Charter BT", serif;
 $root-font-size: 112.5%; // 18px
 $root-line-height: 1.5;
-
 $monospace-font-family: monospace;
-
-$selection-background-color: #B3D4FC;
+$selection-background-color: #b3d4fc;
 $selection-color: white;
 
 // * Normalization
@@ -164,9 +161,9 @@ pre {
 
 // specify the style of visually hidden yet accessible elements
 [hidden][aria-hidden="false"] {
-  clip: rect(0 0 0 0);
   display: inherit;
   position: absolute;
+  clip: rect(0 0 0 0);
 
   &:focus {
     clip: auto;
@@ -180,14 +177,14 @@ pre {
 }
 
 ::selection {
-  background-color: $selection-background-color;
   color: $selection-color;
   text-shadow: none;
+  background-color: $selection-background-color;
 }
 
 html {
-  background-color: $background-color;
   color: $type-color;
+  background-color: $background-color;
 }
 
 code,
@@ -202,9 +199,9 @@ samp {
 // Set sub, sup without affecting line-height: gist.github.com/413930
 sub,
 sup {
+  position: relative;
   font-size: 75%;
   line-height: 0;
-  position: relative;
 }
 
 sup {
