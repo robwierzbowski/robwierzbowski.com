@@ -150,17 +150,14 @@ pre {
   word-wrap: break-word;
 }
 
-// specify the progress cursor of updating elements
 [aria-busy="true"] {
   cursor: progress;
 }
 
-// specify the pointer cursor of trigger elements
 [aria-controls] {
   cursor: pointer;
 }
 
-// specify the unstyled cursor of disabled, not-editable, or otherwise inoperable elements
 [aria-disabled] {
   cursor: default;
 }
@@ -193,14 +190,14 @@ html {
   color: $type-color;
 }
 
-// TODO: move these to a scoped content text set partial
-
 code,
 kbd,
 pre,
 samp {
   font-family: $monospace-font-family, monospace;
 }
+
+// TODO: move these to a scoped content text set partial
 
 // Set sub, sup without affecting line-height: gist.github.com/413930
 sub,
