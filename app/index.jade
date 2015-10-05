@@ -1,7 +1,24 @@
 extends ./templates/layouts/page
 
-block title
-  h1.main-title Rob Wierzbowski
+block main
+  main
+    .Page-header
+      header.Header
+        h1.Header-title Rob Wierzbowski
+        p.Header-blurb Web Developer in Pittsburgh, PA
 
-block content
-  .main-content.m-frontPage
+    .Page-contacts
+      dl.Contacts
+        dt.Contacts-label twitter
+        dd.Contacts-contact
+          a.Contacts-link.-twitter(href="https://twitter.com/robwierzbowski") @robwierzbowski
+        dt.Contacts-label github
+        dd.Contacts-contact
+          a.Contacts-link.-github(href="https://github.com/robwierzbowski") robwierzbowski
+        dt.Contacts-label email
+        dd.Contacts-contact
+          a.Contacts-link.-email(href="mailto:hello@robwierzbowski.com") hello@robwierzbowski
+
+    .Page-cta
+      p.Cta
+        a.Cta-link(href="/available") Let's work together.

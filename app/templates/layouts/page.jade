@@ -4,16 +4,9 @@ html(lang="en")
     block head
       include ../partials/head.jade
 
-  body
-    block header
-      include ../partials/header.jade
+  body.Page
+    block main
 
-    main.main
-      block title
-      block content
-
-    block footer
-
-    block closer
+    block close
       include ../partials/scripts.jade
       include ../partials/ga.jade
