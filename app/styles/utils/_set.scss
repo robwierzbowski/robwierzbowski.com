@@ -2,16 +2,6 @@
 // Based on sanitize.css v2.0.0
 // github.com/jonathantneal/sanitize.css
 
-// TODO: move variables into a vars partial
-$background-color: #fff;
-$type-color: #242424;
-$root-font-family: "Charter BT", serif;
-$root-font-size: 112.5%; // 18px
-$root-line-height: 1.5;
-$monospace-font-family: monospace;
-$selection-background-color: #b3d4fc;
-$selection-color: white;
-
 // * Opinionated defaults
 
 *,
@@ -101,21 +91,21 @@ pre {
 }
 
 ::selection {
-  color: $selection-color;
+  color: $white;
   text-shadow: none;
-  background-color: $selection-background-color;
+  background-color: $ds-purple;
 }
 
 html {
-  color: $type-color;
-  background-color: $background-color;
+  color: $off-black;
+  background-color: $white;
 }
 
 code,
 kbd,
 pre,
 samp {
-  font-family: $monospace-font-family, monospace;
+  font-family: $monospace-font-family;
 }
 
 // TODO: move these to a scoped content text set partial
