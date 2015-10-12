@@ -46,7 +46,7 @@ button,
 [type="week"],
 select,
 textarea {
-  min-height: #{$root-line-height}em;
+  min-height: 1.4em; // This isn't bound to body line height anymore...
 }
 
 textarea {
@@ -87,7 +87,9 @@ pre {
 // * Site specific
 
 :root {
-  font: #{$root-font-size}/#{$root-line-height} $root-font-family;
+  font-family: $serif-font-family;
+  font-size: 112.5%; // 18px
+  line-height: 1.4; // TODO: should this be in reset?
 }
 
 ::selection {
