@@ -1,0 +1,16 @@
+.Contacts {}
+
+.Contacts-contact {
+  &.-twitter:hover {}
+  &.-github {}
+  &.-mail {}
+}
+
+.Contacts-icon {
+  display: inline-block;
+  height: 1em;
+  margin-right: 0.5em;
+  vertical-align: text-bottom;
+}
+
+.Contacts-link {}

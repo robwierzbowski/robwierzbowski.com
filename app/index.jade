@@ -8,16 +8,16 @@ block main
         p.Header-blurb Web Developer in Pittsburgh, PA
 
     .Page-contacts
-      dl.Contacts
-        dt.Contacts-label twitter
-        dd.Contacts-contact
-          a.Contacts-link.-twitter(href="https://twitter.com/robwierzbowski") @robwierzbowski
-        dt.Contacts-label github
-        dd.Contacts-contact
-          a.Contacts-link.-github(href="https://github.com/robwierzbowski") robwierzbowski
-        dt.Contacts-label email
-        dd.Contacts-contact
-          a.Contacts-link.-email(href="mailto:hello@robwierzbowski.com") hello@robwierzbowski
+      ul.Contacts
+        li.Contacts-contact.-twitter
+          img.Contacts-icon(src="/images/icons/twitter.svg")
+          a.Contacts-link(href="https://twitter.com/robwierzbowski") @robwierzbowski
+        li.Contacts-contact.-github
+          img.Contacts-icon(src="/images/icons/github.svg")
+          a.Contacts-link(href="https://github.com/robwierzbowski") robwierzbowski
+        li.Contacts-contact.-email
+          img.Contacts-icon(src="/images/icons/mail.svg")
+          a.Contacts-link(href="mailto:hello@robwierzbowski.com") hello@robwierzbowski
 
     .Page-cta
       p.Cta
