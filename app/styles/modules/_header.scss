@@ -5,4 +5,10 @@
   margin-bottom: $spacing;
 }
 
-.Header-blurb {}
+.Header-blurb {
+  // TODO: Extract text patterns into a re-usable modifier or extendable
+  // placeholder.
+  p {
+    margin-bottom: 1rem;
+  }
+}
