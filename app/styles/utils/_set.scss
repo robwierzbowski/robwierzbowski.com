@@ -88,8 +88,9 @@ pre {
 
 :root {
   font-family: $serif-font-family;
-  font-size: 112.5%; // 18px
+  font-size: 112.5%; // 18pxx
   line-height: 1.4; // TODO: should this be in reset?
+  font-synthesis: none;
 }
 
 ::selection {
