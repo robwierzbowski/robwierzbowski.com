@@ -3,11 +3,20 @@
 }
 
 .Page-header,
-.Page-contacts,
-.Page-cta {
+.Page-content,
+.Page-cta,
+.Page-contacts {
   margin-bottom: $spacing;
 }
 
-.Page-header {}
-.Page-contacts {}
-.Page-cta {}
+.Page-header {
+  @include one();
+}
+
+.Page-content {
+  // TODO: Extract text patterns into a re-usable modifier or extendable
+  // placeholder.
+  p {
+    margin-bottom: 1rem;
+  }
+}
