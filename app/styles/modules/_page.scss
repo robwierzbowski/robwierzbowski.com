@@ -2,14 +2,14 @@
   margin: 1rem;
 }
 
-.Page-header,
+.Page-title,
 .Page-content,
 .Page-cta,
 .Page-contacts {
   margin-bottom: $spacing;
 }
 
-.Page-header {
+.Page-title {
   @include one();
 }
 
