@@ -22,7 +22,7 @@
 
 // * Text Decoration
 
-@mixin text-underline($color, $width: 1px, $position: 1.1em) {
+@mixin text-underline($color, $width: 1px, $position: 0.9em) {
   background-repeat: repeat-x;
   background-size: 5px $width;
   background-position: 0 $position;
