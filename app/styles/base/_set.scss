@@ -117,11 +117,7 @@ a {
   @include text-underline($off-black);
 
   &:hover {
-    @include text-underline(
-      $color: $ds-pink,
-      $offset: 0.01em,
-      $width: 0.075em
-    );
+    @include text-underline($ds-pink, 1.5px);
   }
 }
 

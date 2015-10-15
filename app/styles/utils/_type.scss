@@ -22,14 +22,11 @@
 
 // * Text Decoration
 
-@mixin text-underline($color: black, $offset: 0.02em, $width: 0.05em) {
-  background-image: linear-gradient(
-    to top,
-    transparent $offset,
-    $color $offset,
-    $color calc(#{$offset} + #{$width}),
-    transparent calc(#{$offset} + #{$width})
-  );
+@mixin text-underline($color, $width: 1px, $position: 1.1em) {
+  background-repeat: repeat-x;
+  background-size: 5px $width;
+  background-position: 0 $position;
+  background-image: linear-gradient($color, $color);
 }
 
 @mixin remove-text-underline {
