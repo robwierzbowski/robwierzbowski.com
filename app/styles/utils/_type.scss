@@ -19,3 +19,19 @@
   font-size: 1rem;
   line-height: 1.4;
 };
+
+// * Text Decoration
+
+@mixin text-underline($color: black, $offset: 0.02em, $width: 0.05em) {
+  background-image: linear-gradient(
+    to top,
+    transparent $offset,
+    $color $offset,
+    $color calc(#{$offset} + #{$width}),
+    transparent calc(#{$offset} + #{$width})
+  );
+}
+
+@mixin remove-text-underline {
+  background-image: none;
+}

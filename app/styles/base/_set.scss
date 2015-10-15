@@ -113,6 +113,18 @@ samp {
 
 // TODO: move these to a scoped content text set partial
 
+a {
+  @include text-underline($off-black);
+
+  &:hover {
+    @include text-underline(
+      $color: $ds-pink,
+      $offset: 0.01em,
+      $width: 0.075em
+    );
+  }
+}
+
 // Set sub, sup without affecting line-height: gist.github.com/413930
 sub,
 sup {
