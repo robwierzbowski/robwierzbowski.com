@@ -1,4 +1,4 @@
-'use strict'; // Do we need this for ES2015?
+'use strict';
 
 import fs from 'fs';
 import path from 'path';
@@ -24,7 +24,17 @@ gulp.task('jshint', () =>
   .pipe($.if(!browserSync.active, $.jshint.reporter('fail')))
 );
 
-// Compile and automatically prefix stylesheets
+// Transpile and process JavaScript
+gulp.task('scripts', () =>
+  gulp.src('app/scripts/**/*.js')
+  .pipe($.changed('.tmp/scripts'))
+  .pipe($.sourcemaps.init())
+  .pipe($.babel())
+  .pipe($.sourcemaps.write())
+  .pipe(gulp.dest('.tmp/scripts'))
+);
+
+// Compile and process stylesheets
 gulp.task('styles', () => {
   const SUPPORTED_BROWSERS = ['last 2 versions', '> 5%'];
 
@@ -50,7 +60,7 @@ gulp.task('jade', () =>
 );
 
 // Serve and Watch
-gulp.task('serve', ['styles', 'jade'], () => {
+gulp.task('serve', ['jshint', 'scripts', 'styles', 'jade'], () => {
   browserSync({
     notify: false,
     logPrefix: 'BrowserSync',
@@ -59,7 +69,7 @@ gulp.task('serve', ['styles', 'jade'], () => {
 
   gulp.watch(['app/**/*.jade', 'app/content/*.md'], ['jade', reload]);
   gulp.watch('app/styles/**/*.scss', ['styles', reload]);
-  gulp.watch('app/scripts/**/*.js', ['jshint', reload]);
+  gulp.watch('app/scripts/**/*.js', ['jshint', 'scripts', reload]);
   gulp.watch('app/images/**/*', reload);
 });
 
