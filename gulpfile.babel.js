@@ -14,7 +14,7 @@ import pkg from './package.json';
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
 
-// -- On serve -- //
+// * On serve
 
 // Lint JavaScript
 gulp.task('jshint', () =>
@@ -73,7 +73,7 @@ gulp.task('serve', ['jshint', 'scripts', 'styles', 'jade'], () => {
   gulp.watch('app/images/**/*', reload);
 });
 
-// -- On build -- //
+// * On build
 
 // NOTE! Introduced breaking build changes by introducing Jade.
 // Don't bother to build for now.
