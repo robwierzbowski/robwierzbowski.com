@@ -188,6 +188,7 @@ gulp.task('serve', ['jshint', 'scripts', 'styles', 'jade'], () => {
 // );
 
 // // Build production files, the default task
+// // Re-implemement service worker code from WSK
 // gulp.task('default', ['clean'], (done) => {
 //   runSequence(
 //     'styles',
