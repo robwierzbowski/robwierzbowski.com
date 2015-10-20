@@ -59,6 +59,10 @@ gulp.task('jade', () =>
   .pipe(gulp.dest('.tmp'))
 );
 
+gulp.task('clean', (done) =>
+  del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}, done)
+);
+
 // Serve and Watch
 gulp.task('serve', ['jshint', 'scripts', 'styles', 'jade'], () => {
   browserSync({
@@ -166,11 +170,6 @@ gulp.task('serve', ['jshint', 'scripts', 'styles', 'jade'], () => {
 //   // Output files
 //   .pipe(gulp.dest('dist'))
 //   .pipe($.size({title: 'html'}));
-// });
-
-// // Clean output directory
-// gulp.task('clean', (done) => {
-//   del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}, done);
 // });
 
 // // Build and serve the output from the dist build
