@@ -11,5 +11,7 @@ $ds-pink: hsl(347, 83%, 76%);
 $spacing: 1rem;
 
 // * Fonts
-$serif-font-family: "Charter BT", serif;
+$serif-fallback-family: "Times New Roman", serif;
+$serif-webfont-family: join("Charter BT", $serif-fallback-family);
+
 $monospace-font-family: "Consolas", monospace;

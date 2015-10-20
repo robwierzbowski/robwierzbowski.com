@@ -87,10 +87,14 @@ pre {
 // * Site specific
 
 :root {
-  font-family: $serif-font-family;
+  font-family: $serif-fallback-family;
   font-size: 112.5%; // 18pxx
   line-height: 1.4; // TODO: should this be in reset?
   font-synthesis: none;
+
+  &.is-fontsLoaded {
+    font-family: $serif-webfont-family;
+  }
 }
 
 ::selection {

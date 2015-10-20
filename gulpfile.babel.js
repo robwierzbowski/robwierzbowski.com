@@ -26,7 +26,12 @@ gulp.task('jshint', () =>
 
 // Transpile and process JavaScript
 gulp.task('scripts', () =>
-  gulp.src('app/scripts/**/*.js')
+  gulp.src([
+    // Components
+    'node_modules/fontfaceobserver/fontfaceobserver.js',
+    // Site
+    'app/scripts/**/*.js'
+  ])
   .pipe($.changed('.tmp/scripts'))
   .pipe($.sourcemaps.init())
   .pipe($.babel())
