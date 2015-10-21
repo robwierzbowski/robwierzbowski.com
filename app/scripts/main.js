@@ -1,3 +1,5 @@
+/*global FontFaceObserver:false */
+// TODO: Make FontFaceObserver an ES2015 module
 'use strict';
 
 let fontObservers = [
