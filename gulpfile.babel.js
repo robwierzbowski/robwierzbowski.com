@@ -55,6 +55,18 @@ gulp.task('styles', () => {
   .pipe(gulp.dest('.tmp/styles'));
 });
 
+// Process svgs
+// TODO: Make work in IE with polyfill or appending to DOM
+gulp.task('svg', () =>
+  gulp.src('app/images/sprites/icons/*.svg')
+  .pipe($.svgstore())
+  .pipe($.cheerio({
+      run: function ($) { $('[fill]').removeAttr('fill'); },
+      parserOptions: { xmlMode: true }
+  }))
+  .pipe(gulp.dest('.tmp/images/sprites'))
+);
+
 // Compile templates
 gulp.task('jade', () =>
   gulp.src('app/index.jade')
@@ -69,7 +81,7 @@ gulp.task('clean', (done) =>
 );
 
 // Serve and Watch
-gulp.task('serve', ['jshint', 'scripts', 'styles', 'jade'], () => {
+gulp.task('serve', ['jshint', 'scripts', 'styles', 'jade', 'svg'], () => {
   browserSync({
     notify: false,
     logPrefix: 'BrowserSync',
@@ -80,6 +92,7 @@ gulp.task('serve', ['jshint', 'scripts', 'styles', 'jade'], () => {
   gulp.watch('app/styles/**/*.scss', ['styles', reload]);
   gulp.watch('app/scripts/**/*.js', ['jshint', 'scripts', reload]);
   gulp.watch('app/images/**/*', reload);
+  gulp.watch('app/images/**/*.svg', ['svg', reload]);
 });
 
 // * On build

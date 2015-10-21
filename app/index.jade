@@ -14,11 +14,14 @@ block main
     .Page-contacts
       ul.Contacts
         li.Contacts-contact.-email
-          img.Contacts-icon(src="/images/icons/mail.svg")
+          svg.Contacts-icon
+            use("xlink:href"="/images/sprites/icons.svg#mail")
           a.Contacts-link(href="mailto:hello@robwierzbowski.com", target="_blank") hello@robwierzbowski
         li.Contacts-contact.-twitter
-          img.Contacts-icon(src="/images/icons/twitter.svg")
+          svg.Contacts-icon
+            use("xlink:href"="/images/sprites/icons.svg#twitter")
           a.Contacts-link(href="https://twitter.com/robwierzbowski") @robwierzbowski
         li.Contacts-contact.-github
-          img.Contacts-icon(src="/images/icons/github.svg")
+          svg.Contacts-icon
+            use("xlink:href"="/images/sprites/icons.svg#github")
           a.Contacts-link(href="https://github.com/robwierzbowski") robwierzbowski
