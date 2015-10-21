@@ -57,6 +57,7 @@ gulp.task('styles', () => {
 
 // Process svgs
 // TODO: Make work in IE with polyfill or appending to DOM
+// TODO: SVGO
 gulp.task('svg', () =>
   gulp.src('app/images/sprites/icons/*.svg')
   .pipe($.svgstore())
