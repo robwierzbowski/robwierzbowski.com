@@ -10,9 +10,12 @@ import swPrecache from 'sw-precache';
 import gulpLoadPlugins from 'gulp-load-plugins';
 import {output as pagespeed} from 'psi';
 import pkg from './package.json';
+import lp from 'lazypipe';
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
+
+let build = false;
 
 // * On serve
 
@@ -39,6 +42,12 @@ gulp.task('scripts', () =>
   .pipe(gulp.dest('.tmp/scripts'))
 );
 
+let styleBuild = lp()
+  .pipe($.minifyCss)
+  .pipe($.sourcemaps.write, '.')
+  .pipe(gulp.dest, 'dist/styles')
+  .pipe($.size, {title: 'styles'});
+
 // Compile and process stylesheets
 gulp.task('styles', () => {
   const SUPPORTED_BROWSERS = ['last 2 versions', '> 5%'];
@@ -52,7 +61,9 @@ gulp.task('styles', () => {
   .pipe($.changed('.tmp/styles', {hasChanged: $.changed.compareSha1Digest}))
   .pipe($.autoprefixer(SUPPORTED_BROWSERS))
   .pipe($.sourcemaps.write())
-  .pipe(gulp.dest('.tmp/styles'));
+  .pipe(gulp.dest('.tmp/styles'))
+
+  .pipe($.if(build, styleBuild()));
 });
 
 // Process svgs
@@ -80,7 +91,7 @@ gulp.task('clean', (done) =>
   del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}, done)
 );
 
-// Serve and Watch
+// Serve
 gulp.task('serve', ['jshint', 'scripts', 'styles', 'jade', 'svg'], () => {
   browserSync({
     notify: false,
@@ -95,6 +106,24 @@ gulp.task('serve', ['jshint', 'scripts', 'styles', 'jade', 'svg'], () => {
   gulp.watch('app/images/**/*.svg', ['svg', reload]);
 });
 
+gulp.task('serve:dist', ['default'], () => {
+  browserSync({
+    notify: false,
+    logPrefix: 'BrowserSync',
+    server: 'dist'
+  });
+});
+
+gulp.task('default', ['clean'], (done) => {
+  build = true;
+
+  runSequence(
+    'styles',
+    done
+  );
+})
+
+
 // * On build
 
 // NOTE! Introduced breaking build changes by introducing Jade.
@@ -103,12 +132,6 @@ gulp.task('serve', ['jshint', 'scripts', 'styles', 'jade', 'svg'], () => {
 // TEMP: Remove concatenation / minification of styles, since no building right
 // now. Minification and reporting can happen only on build; no need for that
 // info every change.
-
-// // Concatenate and minify styles
-// .pipe($.if('*.css', $.minifyCss()))
-// .pipe($.sourcemaps.write('.')) // Why two sourcemaps? Because of CSS I'm guessing.
-// .pipe(gulp.dest('dist/styles'))
-// .pipe($.size({title: 'styles'}));
 
 // // Optimize images
 // gulp.task('images', () =>
