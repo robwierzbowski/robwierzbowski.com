@@ -40,6 +40,15 @@ gulp.task('scripts', () =>
   .pipe($.babel())
   .pipe($.sourcemaps.write())
   .pipe(gulp.dest('.tmp/scripts'))
+
+  // Build
+  .pipe($.if(build, pump.obj(
+    $.concat('main.js'),
+    $.uglify({preserveComments: 'some'}),
+    $.size({title: 'scripts'}),
+    $.sourcemaps.write('.'),
+    gulp.dest('dist/scripts')
+  )))
 );
 
 // Compile and process stylesheets
@@ -118,7 +127,7 @@ gulp.task('default', ['clean'], (done) => {
   build = true;
 
   runSequence(
-    'styles',
+    ['styles', 'scripts'],
     done
   );
 })
