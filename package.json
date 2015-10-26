@@ -39,6 +39,7 @@
     "jstransformer-markdown-it": "^0.1.0",
     "opn": "^1.0.0",
     "psi": "^1.0.4",
+    "pumpify": "^1.3.3",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.0.1",
     "sw-precache": "^1.3.2"

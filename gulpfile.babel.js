@@ -10,6 +10,7 @@ import swPrecache from 'sw-precache';
 import gulpLoadPlugins from 'gulp-load-plugins';
 import {output as pagespeed} from 'psi';
 import pkg from './package.json';
+import pump from 'pumpify';
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
@@ -57,10 +58,12 @@ gulp.task('styles', () => {
   .pipe(gulp.dest('.tmp/styles'))
 
   // Build
-  .pipe($.minifyCss)
-  .pipe($.sourcemaps.write, '.')
-  .pipe(gulp.dest, 'dist/styles')
-  .pipe($.size, {title: 'styles'});
+  .pipe($.if(build, pump.obj(
+    $.minifyCss(),
+    $.sourcemaps.write('.'),
+    gulp.dest('dist/styles'),
+    $.size({title: 'styles'})
+  )));
 });
 
 // Process svgs
