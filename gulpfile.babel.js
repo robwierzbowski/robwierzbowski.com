@@ -10,7 +10,6 @@ import swPrecache from 'sw-precache';
 import gulpLoadPlugins from 'gulp-load-plugins';
 import {output as pagespeed} from 'psi';
 import pkg from './package.json';
-import lp from 'lazypipe';
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
@@ -42,12 +41,6 @@ gulp.task('scripts', () =>
   .pipe(gulp.dest('.tmp/scripts'))
 );
 
-let styleBuild = lp()
-  .pipe($.minifyCss)
-  .pipe($.sourcemaps.write, '.')
-  .pipe(gulp.dest, 'dist/styles')
-  .pipe($.size, {title: 'styles'});
-
 // Compile and process stylesheets
 gulp.task('styles', () => {
   const SUPPORTED_BROWSERS = ['last 2 versions', '> 5%'];
@@ -63,7 +56,11 @@ gulp.task('styles', () => {
   .pipe($.sourcemaps.write())
   .pipe(gulp.dest('.tmp/styles'))
 
-  .pipe($.if(build, styleBuild()));
+  // Build
+  .pipe($.minifyCss)
+  .pipe($.sourcemaps.write, '.')
+  .pipe(gulp.dest, 'dist/styles')
+  .pipe($.size, {title: 'styles'});
 });
 
 // Process svgs
