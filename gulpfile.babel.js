@@ -60,9 +60,9 @@ gulp.task('styles', () => {
   // Build
   .pipe($.if(build, pump.obj(
     $.minifyCss(),
+    $.size({title: 'styles'}),
     $.sourcemaps.write('.'),
-    gulp.dest('dist/styles'),
-    $.size({title: 'styles'})
+    gulp.dest('dist/styles')
   )));
 });
 
