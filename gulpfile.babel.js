@@ -123,10 +123,13 @@ gulp.task('templates', () =>
 // Copy all other files
 gulp.task('copy', () =>
   gulp.src([
-    'app/favicon.ico',
-    'app/*.txt',
+    'app/*',
+    '!app/*.jade',
     'app/fonts/*'
-  ], {base: 'app'})
+  ], {
+    base: 'app',
+    dot: true
+  })
   .pipe($.if('**/*.woff2', $.size({title: 'fonts'})))
   .pipe(gulp.dest('dist'))
 );
