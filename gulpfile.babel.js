@@ -88,12 +88,23 @@ gulp.task('svg', () =>
 );
 
 // Compile templates
-gulp.task('jade', () =>
+gulp.task('templates', () =>
   gulp.src('app/index.jade')
   .pipe($.jade({
     pretty: true
   }))
   .pipe(gulp.dest('.tmp'))
+
+  // Build
+  .pipe($.if(build, pump.obj(
+    $.htmlReplace({
+      js: '/scripts/main.js',
+      css: '/styles/main.css'
+    }),
+    $.minifyHtml(),
+    $.size({title: 'html'}),
+    gulp.dest('dist')
+  )))
 );
 
 gulp.task('clean', (done) =>
@@ -101,14 +112,14 @@ gulp.task('clean', (done) =>
 );
 
 // Serve
-gulp.task('serve', ['jshint', 'scripts', 'styles', 'jade', 'svg'], () => {
+gulp.task('serve', ['jshint', 'scripts', 'styles', 'templates', 'svg'], () => {
   browserSync({
     notify: false,
     logPrefix: 'BrowserSync',
     server: ['.tmp', 'app']
   });
 
-  gulp.watch(['app/**/*.jade', 'app/content/*.md'], ['jade', reload]);
+  gulp.watch(['app/**/*.jade', 'app/content/*.md'], ['templates', reload]);
   gulp.watch('app/styles/**/*.scss', ['styles', reload]);
   gulp.watch('app/scripts/**/*.js', ['jshint', 'scripts', reload]);
   gulp.watch('app/images/**/*', reload);
@@ -127,7 +138,7 @@ gulp.task('default', ['clean'], (done) => {
   build = true;
 
   runSequence(
-    ['styles', 'scripts'],
+    ['styles', 'scripts', 'templates'],
     done
   );
 })
