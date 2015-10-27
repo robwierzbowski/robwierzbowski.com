@@ -71,7 +71,7 @@ gulp.task('svg', () =>
   .pipe($.svgstore())
   .pipe($.cheerio({
       run: function ($) { $('[fill]').removeAttr('fill'); },
-      parserOptions: { xmlMode: true }
+      parserOptions: {xmlMode: true}
   }))
   .pipe(gulp.dest('.tmp/images/sprites'))
 
@@ -79,10 +79,10 @@ gulp.task('svg', () =>
   .pipe($.if(build, pump.obj(
     $.imagemin({
       svgoPlugins: [
-        { cleanupIDs: false },
-        { removeDesc: false },
-        { removeDimensions: false },
-        { removeUselessStrokeAndFill: false }
+        {cleanupIDs: false},
+        {removeDesc: false},
+        {removeDimensions: false},
+        {removeUselessStrokeAndFill: false}
       ]
     }),
     $.size({title: 'svg'}),
