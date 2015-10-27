@@ -14,7 +14,10 @@ let build = false;
 
 // Lint JavaScript
 gulp.task('jshint', () =>
-  gulp.src('app/scripts/**/*.js')
+  gulp.src([
+    'gulpfile.babel.js',
+    'app/scripts/**/*.js'
+   ])
   .pipe($.jshint())
   .pipe($.jshint.reporter('jshint-stylish'))
   .pipe($.if(!browserSync.active, $.jshint.reporter('fail')))
