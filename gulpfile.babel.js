@@ -12,8 +12,6 @@ const reload = browserSync.reload;
 
 let build = false;
 
-// * On serve
-
 // Lint JavaScript
 gulp.task('jshint', () =>
   gulp.src('app/scripts/**/*.js')
@@ -25,9 +23,7 @@ gulp.task('jshint', () =>
 // Transpile and process JavaScript
 gulp.task('scripts', () =>
   gulp.src([
-    // Components
     'node_modules/fontfaceobserver/fontfaceobserver.js',
-    // Site
     'app/scripts/**/*.js'
   ])
   .pipe($.changed('.tmp/scripts'))
@@ -50,7 +46,6 @@ gulp.task('scripts', () =>
 gulp.task('styles', () => {
   const SUPPORTED_BROWSERS = ['last 2 versions', '> 5%'];
 
-  // For best performance, don't add Sass partials to `gulp.src`
   return gulp.src('app/styles/main.scss')
   .pipe($.sourcemaps.init())
   .pipe($.sass({
