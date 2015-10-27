@@ -120,6 +120,16 @@ gulp.task('templates', () =>
   )))
 );
 
+// Copy all other files
+gulp.task('copy', () =>
+  gulp.src([
+    'app/favicon.ico',
+    'app/*.txt',
+    'app/fonts/*'
+  ], {base: 'app'})
+  .pipe(gulp.dest('dist'))
+);
+
 gulp.task('clean', (done) =>
   del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}, done)
 );
@@ -151,7 +161,7 @@ gulp.task('default', ['clean'], (done) => {
   build = true;
 
   runSequence(
-    ['styles', 'scripts', 'templates', 'svg'],
+    ['styles', 'scripts', 'templates', 'svg', 'copy'],
     done
   );
 });
