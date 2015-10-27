@@ -76,7 +76,6 @@ gulp.task('styles', () => {
 });
 
 // Process svgs
-// TODO: SVGO
 gulp.task('svg', () =>
   gulp.src('app/images/sprites/icons/*.svg')
   .pipe($.svgstore())
@@ -85,6 +84,20 @@ gulp.task('svg', () =>
       parserOptions: { xmlMode: true }
   }))
   .pipe(gulp.dest('.tmp/images/sprites'))
+
+  // Build
+  .pipe($.if(build, pump.obj(
+    $.imagemin({
+      svgoPlugins: [
+        { cleanupIDs: false },
+        { removeDesc: false },
+        { removeDimensions: false },
+        { removeUselessStrokeAndFill: false }
+      ]
+    }),
+    $.size({title: 'svg'}),
+    gulp.dest('dist/images/sprites')
+  )))
 );
 
 // Compile templates
@@ -138,10 +151,10 @@ gulp.task('default', ['clean'], (done) => {
   build = true;
 
   runSequence(
-    ['styles', 'scripts', 'templates'],
+    ['styles', 'scripts', 'templates', 'svg'],
     done
   );
-})
+});
 
 
 // * On build
