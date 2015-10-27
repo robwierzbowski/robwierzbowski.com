@@ -127,6 +127,7 @@ gulp.task('copy', () =>
     'app/*.txt',
     'app/fonts/*'
   ], {base: 'app'})
+  .pipe($.if('**/*.woff2', $.size({title: 'fonts'})))
   .pipe(gulp.dest('dist'))
 );
 
