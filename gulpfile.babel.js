@@ -12,6 +12,8 @@ const reload = browserSync.reload;
 
 let build = false;
 
+// Note: Fonts, SVGs are not cache busted.
+
 // Lint JavaScript
 gulp.task('jshint', () =>
   gulp.src([
@@ -40,7 +42,10 @@ gulp.task('scripts', () =>
     $.concat('main.js'),
     $.uglify({preserveComments: 'some'}),
     $.size({title: 'scripts'}),
+    $.rev(),
     $.sourcemaps.write('.'),
+    gulp.dest('dist/scripts'),
+    $.rev.manifest(),
     gulp.dest('dist/scripts')
   )))
 );
@@ -63,7 +68,10 @@ gulp.task('styles', () => {
   .pipe($.if(build, pump.obj(
     $.minifyCss(),
     $.size({title: 'styles'}),
+    $.rev(),
     $.sourcemaps.write('.'),
+    gulp.dest('dist/styles'),
+    $.rev.manifest(),
     gulp.dest('dist/styles')
   )));
 });
@@ -94,8 +102,11 @@ gulp.task('svg', () =>
 );
 
 // Compile templates
-gulp.task('templates', () =>
-  gulp.src('app/index.jade')
+gulp.task('templates', () => {
+  let jsMap = require('./dist/scripts/rev-manifest');
+  let cssMap = require('./dist/styles/rev-manifest');
+
+  return gulp.src('app/index.jade')
   .pipe($.jade({
     pretty: true
   }))
@@ -104,14 +115,14 @@ gulp.task('templates', () =>
   // Build
   .pipe($.if(build, pump.obj(
     $.htmlReplace({
-      js: '/scripts/main.js',
-      css: '/styles/main.css'
+      js: `/scripts/${jsMap["main.js"]}`,
+      css: `/styles/${cssMap["main.css"]}`
     }),
     $.minifyHtml(),
     $.size({title: 'html'}),
     gulp.dest('dist')
-  )))
-);
+  )));
+});
 
 // Copy all other files
 gulp.task('copy', () =>
@@ -158,7 +169,8 @@ gulp.task('default', ['clean'], (done) => {
   build = true;
 
   runSequence(
-    ['styles', 'scripts', 'templates', 'svg', 'copy'],
+    ['styles', 'scripts', 'svg', 'copy'],
+    'templates',
     done
   );
 });
