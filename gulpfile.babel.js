@@ -127,7 +127,7 @@ gulp.task('templates', () => {
 // Copy all other files
 gulp.task('copy', () =>
   gulp.src([
-    'app/*',
+    'app/*.*',
     '!app/*.jade',
     'app/fonts/*'
   ], {
