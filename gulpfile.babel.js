@@ -6,7 +6,7 @@ import runSequence from 'run-sequence';
 import browserSync from 'browser-sync';
 import gulpLoadPlugins from 'gulp-load-plugins';
 import pump from 'pumpify';
-import deploy from './deploy';
+// import deploy from './deploy';
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
