@@ -175,30 +175,39 @@ gulp.task('default', ['clean'], (done) => {
   );
 });
 
-gulp.task('publish', () => {
+gulp.task('publish', ['default'], () => {
+  const day = 86400;
+
+  // Uses global config for authorization
   let awsSettings = {
-    // Uses global config for authorization
     params: {
       Bucket: 'robwierzbowski.com'
     },
     region: 'us-east-1'
   };
 
-  let assetHeaders = {
-    'Cache-Control': 'max-age=155520000'
-  };
-
-  let htmlHeaders = {
-    'Cache-Control': 'no-store' // Good idea?
-  };
+  let gzipTypes = '**/*.{html,css,js,svg,json,txt}';
+  let cacheBustedTypes = '**/*.{css,js}';
+  let cachedTypes = '**/*.{gif,jpeg,jpg,png,svg,webp,ico,woff,woff2}';
+  let noCacheTypes = '**/*.{html,json,xml,txt}';
+  let otherTypes = [
+    '**/*',
+    `!${cacheBustedTypes}`,
+    `!${cachedTypes}`,
+    `!${noCacheTypes}`
+  ];
+  let farFuture = {'Cache-Control': `max-age=${day * 365}`};
+  let future = {'Cache-Control': `max-age=${day * 7}`};
+  let noCache = {'Cache-Control': 'no-cache'};
 
   let publisher = $.awspublish.create(awsSettings);
 
-  return gulp.src('dist/styles/*.css', {base: 'dist'})
-  .pipe(gulp.dest('testo'))
-  .pipe($.awspublish.gzip())
-  .pipe(publisher.publish(assetHeaders))
-  .pipe(publisher.cache())
+  return gulp.src('dist/**/*', {base: 'dist'})
+  .pipe($.if(gzipTypes, $.awspublish.gzip()))
+  .pipe($.if(cacheBustedTypes, publisher.publish(farFuture)))
+  .pipe($.if(cachedTypes, publisher.publish(future)))
+  .pipe($.if(noCacheTypes, publisher.publish(noCache)))
+  .pipe($.if(otherTypes, publisher.publish()))
   .pipe($.awspublish.reporter());
 });
 
