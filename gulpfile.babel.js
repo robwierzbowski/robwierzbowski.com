@@ -6,7 +6,6 @@ import runSequence from 'run-sequence';
 import browserSync from 'browser-sync';
 import gulpLoadPlugins from 'gulp-load-plugins';
 import pump from 'pumpify';
-// import deploy from './deploy';
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
@@ -174,6 +173,33 @@ gulp.task('default', ['clean'], (done) => {
     'templates',
     done
   );
+});
+
+gulp.task('publish', () => {
+  let awsSettings = {
+    // Uses global config for authorization
+    params: {
+      Bucket: 'robwierzbowski.com'
+    },
+    region: 'us-east-1'
+  };
+
+  let assetHeaders = {
+    'Cache-Control': 'max-age=155520000'
+  };
+
+  let htmlHeaders = {
+    'Cache-Control': 'no-store' // Good idea?
+  };
+
+  let publisher = $.awspublish.create(awsSettings);
+
+  return gulp.src('dist/styles/*.css', {base: 'dist'})
+  .pipe(gulp.dest('testo'))
+  .pipe($.awspublish.gzip())
+  .pipe(publisher.publish(assetHeaders))
+  .pipe(publisher.cache())
+  .pipe($.awspublish.reporter());
 });
 
 // TODO: Add Pagespeed task
