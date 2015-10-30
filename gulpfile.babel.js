@@ -186,7 +186,7 @@ gulp.task('publish', ['default'], () => {
     region: 'us-east-1'
   };
 
-  let gzipTypes = '**/*.{html,css,js,svg,json,txt}';
+  let gzipTypes = '**/*.{html,css,js,svg,ico,json,txt}';
   let cacheBustedTypes = '**/*.{css,js}';
   let cachedTypes = '**/*.{gif,jpeg,jpg,png,svg,webp,ico,woff,woff2}';
   let noCacheTypes = '**/*.{html,json,xml,txt}';
