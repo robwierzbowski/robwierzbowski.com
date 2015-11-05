@@ -9,8 +9,19 @@ import pump from 'pumpify';
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
-
 let build = false;
+
+const awsSettings = {
+  params: {
+    Bucket: 'robwierzbowski.com'
+  },
+  region: 'us-east-1'
+};
+const day = 86400;
+const farFuture = {'Cache-Control': `max-age=${day * 365}`};
+const future = {'Cache-Control': `max-age=${day * 7}`};
+const noCache = {'Cache-Control': 'no-cache'};
+const publisher = $.awspublish.create(awsSettings);
 
 // Note: Fonts, SVGs are not cache busted.
 
@@ -175,32 +186,23 @@ gulp.task('default', ['clean'], (done) => {
   );
 });
 
-gulp.task('publish', ['default'], () => {
-  const day = 86400;
+gulp.task('update-gauges', () => {
+  return $.remoteSrc('track.js', {base: 'https://track.gaug.es/'})
+  .pipe(publisher.publish(future))
+  .pipe($.awspublish.reporter());
+});
 
-  // Uses global config for authorization
-  let awsSettings = {
-    params: {
-      Bucket: 'robwierzbowski.com'
-    },
-    region: 'us-east-1'
-  };
-
-  let gzipTypes = '**/*.{html,css,js,svg,ico,json,txt}';
-  let cacheBustedTypes = '**/*.{css,js}';
-  let cachedTypes = '**/*.{gif,jpeg,jpg,png,svg,webp,ico,woff,woff2}';
-  let noCacheTypes = '**/*.{html,json,xml,txt}';
-  let otherTypes = [
+gulp.task('publish', ['default', 'update-gauges'], () => {
+  const gzipTypes = '**/*.{html,css,js,svg,ico,json,txt}';
+  const cacheBustedTypes = '**/*.{css,js}';
+  const cachedTypes = '**/*.{gif,jpeg,jpg,png,svg,webp,ico,woff,woff2}';
+  const noCacheTypes = '**/*.{html,json,xml,txt}';
+  const otherTypes = [
     '**/*',
     `!${cacheBustedTypes}`,
     `!${cachedTypes}`,
     `!${noCacheTypes}`
   ];
-  let farFuture = {'Cache-Control': `max-age=${day * 365}`};
-  let future = {'Cache-Control': `max-age=${day * 7}`};
-  let noCache = {'Cache-Control': 'no-cache'};
-
-  let publisher = $.awspublish.create(awsSettings);
 
   return gulp.src('dist/**/*', {base: 'dist'})
   .pipe($.if(gzipTypes, $.awspublish.gzip()))
