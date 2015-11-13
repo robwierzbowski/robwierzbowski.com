@@ -9,6 +9,16 @@ import pump from 'pumpify';
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
+
+const paths = {
+  inlineComponents: ['node_modules/woff2-feature-test/woff2.js'],
+  inlineScripts: ['app/scripts/head.js'],
+  scripts: [
+    'node_modules/fontfaceobserver/fontfaceobserver.js',
+    'app/scripts/main.js'
+  ]
+};
+
 let build = false;
 
 // AWS vars
@@ -40,10 +50,7 @@ gulp.task('jshint', () =>
 
 // Transpile and process JavaScript
 gulp.task('scripts', () =>
-  gulp.src([
-    'node_modules/fontfaceobserver/fontfaceobserver.js',
-    'app/scripts/**/*.js'
-  ])
+  gulp.src(paths.scripts)
   .pipe($.changed('.tmp/scripts'))
   .pipe($.sourcemaps.init())
   .pipe($.babel())
@@ -64,9 +71,7 @@ gulp.task('scripts', () =>
 );
 
 gulp.task('components:inline', () =>
-  gulp.src([
-    // 'node_modules/woff2-feature-test/woff2.js'
-  ])
+  gulp.src(paths.inlineComponents)
   .pipe($.changed('.tmp/components/'))
 
   // Build
@@ -80,9 +85,7 @@ gulp.task('components:inline', () =>
 );
 
 gulp.task('scripts:inline', () =>
-  gulp.src([
-    // 'app/scripts/example.js'
-  ])
+  gulp.src(paths.inlineScripts)
   .pipe($.changed('.tmp/scripts'))
   .pipe($.sourcemaps.init())
   .pipe($.babel())
@@ -150,7 +153,7 @@ gulp.task('svg', () =>
 );
 
 // Compile templates
-gulp.task('templates', ['components:inline'], () => {
+gulp.task('templates', ['scripts:inline', 'components:inline'], () => {
   return gulp.src('app/index.jade')
   .pipe($.jade({
     pretty: true,
@@ -201,9 +204,15 @@ gulp.task('serve', ['jshint', 'scripts', 'styles', 'templates', 'svg'], () => {
     server: ['.tmp', 'app']
   });
 
-  gulp.watch(['app/**/*.jade'], ['templates', reload]);
+  gulp.watch(
+    ['app/**/*.jade'].concat(paths.inlineScripts, paths.inlineComponents),
+    ['templates', reload]
+  );
   gulp.watch('app/styles/**/*.scss', ['styles', reload]);
-  gulp.watch('app/scripts/**/*.js', ['jshint', 'scripts', reload]);
+  gulp.watch(paths.scripts, ['jshint', 'scripts', reload]);
+  gulp.watch(paths.inlineScripts, ['jshint', 'scripts:inline', reload]);
+  gulp.watch(paths.inlinecomponents, ['jshint', 'components:inline', reload]);
+
   gulp.watch('app/images/**/*', reload);
   gulp.watch('app/images/**/*.svg', ['svg', reload]);
 });
