@@ -61,6 +61,41 @@ gulp.task('scripts', () =>
   )))
 );
 
+gulp.task('components:inline', () =>
+  gulp.src([
+    // 'node_modules/woff2-feature-test/woff2.js'
+  ])
+  .pipe($.changed('.tmp/components/'))
+
+  // Build
+  .pipe($.if(build, pump.obj(
+    $.uglify({preserveComments: 'some'}),
+    $.size({title: 'inline scripts'}),
+    $.sourcemaps.write('.')
+  )))
+
+  .pipe(gulp.dest('.tmp/components/'))
+);
+
+gulp.task('scripts:inline', () =>
+  gulp.src([
+    // 'app/scripts/example.js'
+  ])
+  .pipe($.changed('.tmp/scripts'))
+  .pipe($.sourcemaps.init())
+  .pipe($.babel())
+  .pipe($.sourcemaps.write())
+
+  // Build
+  .pipe($.if(build, pump.obj(
+    $.uglify({preserveComments: 'some'}),
+    $.size({title: 'inline scripts'}),
+    $.sourcemaps.write('.')
+  )))
+
+  .pipe(gulp.dest('.tmp/scripts'))
+);
+
 // Compile and process stylesheets
 gulp.task('styles', () => {
   const SUPPORTED_BROWSERS = ['last 2 versions', '> 5%'];
@@ -113,7 +148,7 @@ gulp.task('svg', () =>
 );
 
 // Compile templates
-gulp.task('templates', () => {
+gulp.task('templates', ['components:inline'], () => {
   return gulp.src('app/index.jade')
   .pipe($.jade({
     pretty: true,
