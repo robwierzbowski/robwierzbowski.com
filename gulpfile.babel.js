@@ -199,7 +199,7 @@ gulp.task('serve', ['jshint', 'scripts', 'styles', 'templates', 'svg'], () => {
     server: ['.tmp', 'app']
   });
 
-  gulp.watch(['app/**/*.jade', 'app/content/*.md'], ['templates', reload]);
+  gulp.watch(['app/**/*.jade'], ['templates', reload]);
   gulp.watch('app/styles/**/*.scss', ['styles', reload]);
   gulp.watch('app/scripts/**/*.js', ['jshint', 'scripts', reload]);
   gulp.watch('app/images/**/*', reload);
