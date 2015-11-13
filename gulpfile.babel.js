@@ -116,7 +116,8 @@ gulp.task('svg', () =>
 gulp.task('templates', () => {
   return gulp.src('app/index.jade')
   .pipe($.jade({
-    pretty: true
+    pretty: true,
+    basedir: '.'
   }))
   .pipe(gulp.dest('.tmp'))
 

@@ -2,7 +2,7 @@ doctype html
 html(lang="en")
   head
     block head
-      include ../partials/head.jade
+      include /app/templates/partials/head.jade
 
   body.Page
     block open
@@ -11,5 +11,5 @@ html(lang="en")
     block main
 
     block close
-      include ../partials/scripts.jade
-      include ../partials/gauges.jade
+      include /app/templates/partials/scripts.jade
+      include /app/templates/partials/gauges.jade
