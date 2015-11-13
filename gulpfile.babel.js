@@ -11,6 +11,7 @@ const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
 let build = false;
 
+// AWS vars
 const awsSettings = {
   params: {
     Bucket: 'robwierzbowski.com'
@@ -24,6 +25,7 @@ const noCache = {'Cache-Control': 'no-cache'};
 const publisher = $.awspublish.create(awsSettings);
 
 // Note: Fonts, SVGs are not cache busted.
+// TODO: Fix that ^^
 
 // Lint JavaScript
 gulp.task('jshint', () =>
