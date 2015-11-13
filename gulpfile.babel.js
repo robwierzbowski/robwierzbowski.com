@@ -154,6 +154,11 @@ gulp.task('svg', () =>
 
 // Compile templates
 gulp.task('templates', ['scripts:inline', 'components:inline'], () => {
+  // The build stream is evaluated even if nothing is sent through it, so we
+  // need default objects for the htmlReplace task.
+  const jsMap = build ? require('./dist/scripts/rev-manifest') : {};
+  const cssMap = build ? require('./dist/styles/rev-manifest') : {};
+
   return gulp.src('app/index.jade')
   .pipe($.jade({
     pretty: true,
@@ -162,20 +167,15 @@ gulp.task('templates', ['scripts:inline', 'components:inline'], () => {
   .pipe(gulp.dest('.tmp'))
 
   // Build
-  .pipe($.if(build, () => {
-    let jsMap = require('./dist/scripts/rev-manifest');
-    let cssMap = require('./dist/styles/rev-manifest');
-
-    return pump.obj(
-       $.htmlReplace({
-        js: `/scripts/${jsMap["main.js"]}`,
-        css: `/styles/${cssMap["main.css"]}`
-      }),
-      $.minifyHtml(),
-      $.size({title: 'html'}),
-      gulp.dest('dist')
-    );
-  }));
+  .pipe($.if(build, pump.obj(
+     $.htmlReplace({
+      js: `/scripts/${jsMap["main.js"]}`,
+      css: `/styles/${cssMap["main.css"]}`
+    }),
+    $.minifyHtml(),
+    $.size({title: 'html'}),
+    gulp.dest('dist')
+  )));
 });
 
 // Copy all other files
