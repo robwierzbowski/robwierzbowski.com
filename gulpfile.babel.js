@@ -169,7 +169,10 @@ gulp.task('templates', ['scripts:inline', 'components:inline'], () => {
   // Build
   .pipe($.if(build, pump.obj(
      $.htmlReplace({
-      js: `/scripts/${jsMap["main.js"]}`,
+      js: {
+        src: `/scripts/${jsMap["main.js"]}`,
+        tpl: `<script async src="%s"></script>`
+      },
       css: `/styles/${cssMap["main.css"]}`
     }),
     $.minifyHtml(),
