@@ -51,15 +51,15 @@ gulp.task('jshint', () =>
 // Transpile and process JavaScript
 gulp.task('scripts', () =>
   gulp.src(paths.scripts)
-  .pipe($.changed('.tmp/scripts'))
+  .pipe($.newer('.tmp/scripts/main.js'))
   .pipe($.sourcemaps.init())
   .pipe($.babel())
+  .pipe($.concat('main.js'))
   .pipe($.sourcemaps.write())
   .pipe(gulp.dest('.tmp/scripts'))
 
   // Build
   .pipe($.if(build, pump.obj(
-    $.concat('main.js'),
     $.uglify({preserveComments: 'some'}),
     $.size({title: 'scripts'}),
     $.rev(),
@@ -72,7 +72,7 @@ gulp.task('scripts', () =>
 
 gulp.task('components:inline', () =>
   gulp.src(paths.inlineComponents)
-  .pipe($.changed('.tmp/components/'))
+  .pipe($.newer('.tmp/components/'))
 
   // Build
   .pipe($.if(build, pump.obj(
@@ -86,7 +86,7 @@ gulp.task('components:inline', () =>
 
 gulp.task('scripts:inline', () =>
   gulp.src(paths.inlineScripts)
-  .pipe($.changed('.tmp/scripts'))
+  .pipe($.newer('.tmp/scripts'))
   .pipe($.sourcemaps.init())
   .pipe($.babel())
   .pipe($.sourcemaps.write())
