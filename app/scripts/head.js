@@ -18,3 +18,8 @@ const sources = [
 ];
 
 sources.forEach( (source) => { prefetch(source); });
+
+// If the font has been loaded previously, set the loaded state right away
+if (sessionStorage.getItem('fontsLoaded')) {
+  document.documentElement.classList.add('is-fontsLoaded');
+}
