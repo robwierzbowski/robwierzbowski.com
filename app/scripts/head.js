@@ -1,19 +1,20 @@
 /*global supportsWoff2:false */
 'use strict';
 
-// Create prefetch links for fonts
+// Create prefetch links for assets
+const prefetch = (url) => {
+  const link = document.createElement('link');
+  link.setAttribute('rel', 'prefetch');
+  link.setAttribute('href', url);
+  document.head.appendChild(link);
+};
+
 const fontPath = '/fonts/';
 const fontType = supportsWoff2 ? '.woff2' : '.woff';
-const fontList =   [
-  'charter-bt-roman',
-  'charter-bt-italic'
+const sources = [
+  `${fontPath}charter-bt-roman${fontType}`,
+  `${fontPath}charter-bt-italic${fontType}`,
+  '/images/sprites/icons.svg'
 ];
 
-fontList.forEach((font) => {
-  const fontUrl = `${fontPath}${font}${fontType}`;
-  const prefetch = document.createElement('link');
-
-  prefetch.setAttribute('rel', 'prefetch');
-  prefetch.setAttribute('href', fontUrl);
-  document.head.appendChild(prefetch);
-});
+sources.forEach( (source) => { prefetch(source); });
