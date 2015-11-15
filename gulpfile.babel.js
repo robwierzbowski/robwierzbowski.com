@@ -240,7 +240,8 @@ gulp.task('default', ['clean'], (done) => {
 
 gulp.task('update-gauges', () => {
   return $.remoteSrc('track.js', {base: 'https://track.gaug.es/'})
-  .pipe(publisher.publish(future))
+  .pipe($.awspublish.gzip())
+  .pipe(publisher.publish(future, {force: true}))
   .pipe($.awspublish.reporter());
 });
 
