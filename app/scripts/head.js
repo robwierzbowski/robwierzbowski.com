@@ -1,6 +1,11 @@
 /*global supportsWoff2:false */
 'use strict';
 
+// If the font has been loaded previously, set the loaded state right away
+if (sessionStorage.getItem('fontsLoaded')) {
+  document.documentElement.classList.add('is-fontsLoaded');
+}
+
 // Create prefetch links for assets
 const prefetch = (url) => {
   const link = document.createElement('link');
@@ -19,7 +24,3 @@ const sources = [
 
 sources.forEach( (source) => { prefetch(source); });
 
-// If the font has been loaded previously, set the loaded state right away
-if (sessionStorage.getItem('fontsLoaded')) {
-  document.documentElement.classList.add('is-fontsLoaded');
-}
