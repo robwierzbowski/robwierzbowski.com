@@ -14,9 +14,5 @@
 }
 
 .Page-content {
-  // TODO: Extract text patterns into a re-usable modifier or extendable
-  // placeholder.
-  p {
-    margin-bottom: 1rem;
-  }
+  @extend %text;
 }

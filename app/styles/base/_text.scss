@@ -1,9 +1,17 @@
 // * Text Modifier
-// A special class containing rules for content text that can be applied to any
+// A special extend containing rules for content text that can be applied to any
 // module or module part.
 
-%text{
+%text {
   p {
     margin-bottom: 1rem;
+  }
+
+  a {
+    @include text-underline($off-black);
+
+    &:hover {
+      @include text-underline($ds-pink, 1.5px);
+    }
   }
 }

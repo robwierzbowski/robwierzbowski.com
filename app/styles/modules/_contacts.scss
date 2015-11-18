@@ -14,4 +14,11 @@
   vertical-align: text-bottom;
 }
 
-.Contacts-link {}
+.Contacts-link {
+  // TODO: Dry this up with a "standard text link" mixin.
+  @include text-underline($off-black);
+
+  &:hover {
+    @include text-underline($ds-pink, 1.5px);
+  }
+}
