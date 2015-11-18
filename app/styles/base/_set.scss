@@ -115,16 +115,6 @@ samp {
   font-family: $monospace-font-family;
 }
 
-// TODO: move these to a scoped content text set partial
-
-a {
-  @include text-underline($off-black);
-
-  &:hover {
-    @include text-underline($ds-pink, 1.5px);
-  }
-}
-
 // Set sub, sup without affecting line-height: gist.github.com/413930
 sub,
 sup {
