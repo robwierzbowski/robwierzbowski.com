@@ -6,6 +6,7 @@ import runSequence from 'run-sequence';
 import browserSync from 'browser-sync';
 import gulpLoadPlugins from 'gulp-load-plugins';
 import pump from 'pumpify';
+import {argv} from 'yargs';
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
@@ -24,7 +25,7 @@ let build = false;
 // AWS vars
 const awsSettings = {
   params: {
-    Bucket: 'robwierzbowski.com'
+    Bucket: argv.dev ? 'dev.robwierzbowski.com' : 'robwierzbowski.com'
   },
   region: 'us-east-1'
 };
@@ -32,7 +33,6 @@ const day = 86400;
 const farFuture = {'Cache-Control': `max-age=${day * 365}`};
 const future = {'Cache-Control': `max-age=${day * 7}`};
 const noCache = {'Cache-Control': 'no-cache'};
-const publisher = $.awspublish.create(awsSettings);
 
 // Note: Fonts, SVGs are not cache busted.
 // TODO: Fix that ^^
@@ -239,12 +239,15 @@ gulp.task('default', ['clean'], (done) => {
 });
 
 gulp.task('update-gauges', () => {
+  let publisher = $.awspublish.create(awsSettings);
+
   return $.remoteSrc('track.js', {base: 'https://track.gaug.es/'})
   .pipe($.awspublish.gzip())
   .pipe(publisher.publish(future, {force: true}))
   .pipe($.awspublish.reporter());
 });
 
+// Use the --dev flag to publish to dev.robwierzbowski.com
 gulp.task('publish', ['default', 'update-gauges'], () => {
   const gzipTypes = '**/*.{html,css,js,svg,ico,json,txt}';
   const cacheBustedTypes = '**/*.{css,js}';
@@ -256,6 +259,8 @@ gulp.task('publish', ['default', 'update-gauges'], () => {
     `!${cachedTypes}`,
     `!${noCacheTypes}`
   ];
+
+  let publisher = $.awspublish.create(awsSettings);
 
   return gulp.src('dist/**/*', {base: 'dist'})
   .pipe($.if(gzipTypes, $.awspublish.gzip()))
