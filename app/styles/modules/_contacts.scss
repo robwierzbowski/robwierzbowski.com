@@ -16,9 +16,10 @@
 
 .Contacts-link {
   // TODO: Dry this up with a "standard text link" mixin.
-  @include text-underline($off-black);
+  @include fancy-underline($off-black, $white);
 
   &:hover {
-    @include text-underline($ds-pink, 1.5px);
+    @include fancy-underline-color($ds-pink);
+    @include fancy-underline-size(1.5px);
   }
 }
