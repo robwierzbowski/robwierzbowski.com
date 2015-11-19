@@ -4,7 +4,7 @@
 }
 
 .Page-title,
-.Page-content,
+// .Page-content,
 .Page-contacts {
   margin-bottom: $spacing;
 }
@@ -15,4 +15,5 @@
 
 .Page-content {
   @extend %text;
+  margin-bottom: $spacing + 0.5rem;
 }

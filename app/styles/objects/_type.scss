@@ -75,11 +75,19 @@
 
 // * Links
 
-@mixin text-link () {
+@mixin link-normal() {
   @include fancy-underline($off-black, $white);
+}
+
+@mixin link-hover() {
+  @include fancy-underline-color($ds-pink);
+  @include fancy-underline-size(1.5px);
+}
+
+@mixin link() {
+  @include link-normal()
 
   &:hover {
-    @include fancy-underline-color($ds-pink);
-    @include fancy-underline-size(1.5px);
+    @include link-hover()
   }
 }

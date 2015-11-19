@@ -13,5 +13,11 @@ $spacing: 1rem;
 // * Fonts
 $serif-fallback-family: "Times New Roman", serif;
 $serif-webfont-family: join("Charter BT", $serif-fallback-family);
-
 $monospace-font-family: "Consolas", monospace;
+
+// * Media Queries
+$mq-coarse: "(pointer: coarse)";
+
+$mq-small-only: "(max-width: 30em)";
+$mq-medium: "(min-width: 30em)";
+$mq-medium-only: "(min-width: 30em)";

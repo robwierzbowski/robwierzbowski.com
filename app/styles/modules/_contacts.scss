@@ -1,10 +1,6 @@
 .Contacts {}
 
-.Contacts-contact {
-  &.-email {}
-  &.-twitter {}
-  &.-github {}
-}
+.Contacts-contact {}
 
 .Contacts-icon {
   display: inline-block;
@@ -15,5 +11,26 @@
 }
 
 .Contacts-link {
-  @include text-link();
+}
+
+// * Modifiers
+
+.Contacts-contact {
+  @media #{$mq-small-only, $mq-coarse} {
+    margin-bottom: 0.25rem;
+  }
+}
+
+.Contacts-label {
+  @include link-normal();
+}
+
+.Contacts-link:hover {
+  .Contacts-icon {
+    fill: $ds-pink;
+  }
+
+  .Contacts-label {
+    @include link-hover();
+  }
 }
