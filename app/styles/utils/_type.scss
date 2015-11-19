@@ -56,9 +56,3 @@
   text-shadow: none;
   background-image: none;
 }
-
-@mixin padded-text($color, $width: 0.2rem) {
-  padding: $width 0;
-  background: $color;
-  box-shadow: $width 0 0 $color, (-$width) 0 0 $color;
-};
