@@ -2,7 +2,7 @@
 'use strict';
 
 // If the font has been loaded previously, set the loaded state right away
-if (sessionStorage.getItem('fontsLoaded')) {
+if (/fontsLoaded=true/.test(document.cookie)) {
   document.documentElement.classList.add('is-fontsLoaded');
 }
 

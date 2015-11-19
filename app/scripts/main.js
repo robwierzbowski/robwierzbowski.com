@@ -10,7 +10,7 @@ let fontObservers = [
 
 Promise.all(fontObservers).then(function() {
   document.documentElement.classList.add('is-fontsLoaded');
-  sessionStorage.setItem('fontsLoaded', true);
+  document.cookie = 'fontsLoaded=true';
 });
 
 // * Load external svg and append to DOM
