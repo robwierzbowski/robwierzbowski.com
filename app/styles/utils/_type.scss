@@ -22,7 +22,18 @@
 
 // * Text Decoration
 
-@mixin text-underline($color, $width: 1px, $position: 0.9em) {
+@mixin cut-underline($color) {
+  text-shadow:
+    0.06em 0 $color,
+    -0.06em 0 $color,
+    0.09em 0 $color,
+    -0.09em 0 $color,
+    0.12em 0 $color,
+    -0.12em 0 $color;
+}
+
+@mixin text-underline($color, $width: 1px, $position: 0.9em, $background: white) {
+  @include cut-underline($background);
   background-repeat: repeat-x;
   background-size: 5px $width;
   background-position: 0 $position;
@@ -30,6 +41,7 @@
 }
 
 @mixin remove-text-underline {
+  text-shadow: none;
   background-image: none;
 }
 
