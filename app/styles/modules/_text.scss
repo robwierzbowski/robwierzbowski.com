@@ -8,12 +8,6 @@
   }
 
   a {
-    // TODO: Dry this up with a "standard text link" mixin.
-    @include fancy-underline($off-black, $white);
-
-    &:hover {
-      @include fancy-underline-color($ds-pink);
-      @include fancy-underline-size(1.5px);
-    }
+    @include text-link();
   }
 }
