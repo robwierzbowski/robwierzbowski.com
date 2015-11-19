@@ -1,3 +1,19 @@
+// * Resets
+
+@mixin link-reset() {
+  text-decoration: none;
+
+  // Note: We can't use `color: inherit` in the pseudo selectors since its
+  // specificity will steamroll any styles we're applying on top of link-reset.
+  &:hover,
+  &:active,
+  &:focus,
+  &:visited {
+    outline: none;
+    text-decoration: none;
+  }
+}
+
 // * Sizes
 
 @mixin one {
@@ -20,7 +36,7 @@
   line-height: 1.4;
 }
 
-// * Text Decoration
+// * Fancy underlines
 
 @mixin fancy-underline-color($color) {
   background-image: linear-gradient($color, $color);
