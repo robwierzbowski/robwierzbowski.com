@@ -72,3 +72,14 @@
   text-shadow: none;
   background-image: none;
 }
+
+// * Links
+
+@mixin link () {
+  @include fancy-underline($off-black, $white);
+
+  &:hover {
+    @include fancy-underline-color($ds-pink);
+    @include fancy-underline-size(1.5px);
+  }
+}
