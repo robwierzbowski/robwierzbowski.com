@@ -11,6 +11,8 @@ import {argv} from 'yargs';
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
 
+let build = argv.build;
+
 const paths = {
   inlineComponents: ['node_modules/woff2-feature-test/woff2.js'],
   inlineScripts: ['app/scripts/head.js'],
@@ -19,8 +21,6 @@ const paths = {
     'app/scripts/main.js'
   ]
 };
-
-let build = false;
 
 // AWS vars
 const awsSettings = {
