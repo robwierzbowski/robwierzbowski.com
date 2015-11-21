@@ -154,11 +154,6 @@ gulp.task('svg', () =>
 
 // Compile templates
 gulp.task('templates', ['scripts:inline', 'components:inline'], () => {
-  // The build stream is evaluated even if nothing is sent through it, so we
-  // need default objects for the htmlReplace task.
-  const jsMap = build ? require('./dist/scripts/rev-manifest') : {};
-  const cssMap = build ? require('./dist/styles/rev-manifest') : {};
-
   return gulp.src('app/index.jade')
   .pipe($.jade({
     pretty: true,
@@ -168,13 +163,6 @@ gulp.task('templates', ['scripts:inline', 'components:inline'], () => {
 
   // Build
   .pipe($.if(build, pump.obj(
-     $.htmlReplace({
-      js: {
-        src: `/scripts/${jsMap["main.js"]}`,
-        tpl: `<script async src="%s"></script>`
-      },
-      css: `/styles/${cssMap["main.css"]}`
-    }),
     $.minifyHtml(),
     $.size({title: 'html'}),
     gulp.dest('dist')
