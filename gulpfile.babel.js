@@ -65,8 +65,8 @@ gulp.task('scripts', () =>
     $.rev(),
     $.sourcemaps.write('.'),
     gulp.dest('dist/scripts'),
-    $.rev.manifest(),
-    gulp.dest('dist/scripts')
+    $.rev.manifest('rev-manifest-scripts.json'),
+    gulp.dest('.tmp/manifests')
   )))
 );
 
@@ -122,8 +122,8 @@ gulp.task('styles', () => {
     $.rev(),
     $.sourcemaps.write('.'),
     gulp.dest('dist/styles'),
-    $.rev.manifest(),
-    gulp.dest('dist/styles')
+    $.rev.manifest('rev-manifest-styles.json'),
+    gulp.dest('.tmp/manifests')
   )));
 });
 
@@ -148,7 +148,10 @@ gulp.task('svg', () =>
       ]
     }),
     $.size({title: 'svg'}),
-    gulp.dest('dist/images/sprites')
+    $.rev(),
+    gulp.dest('dist/images/sprites'),
+    $.rev.manifest('rev-manifest-svg.json'),
+    gulp.dest('.tmp/manifests')
   )))
 );
 
