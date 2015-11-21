@@ -7,7 +7,7 @@ if (sessionStorage.getItem('fontsLoaded')) {
 }
 
 // Create prefetch links for assets
-const prefetch = (url) => {
+const createPrefetch = (url) => {
   const link = document.createElement('link');
   link.setAttribute('rel', 'prefetch');
   link.setAttribute('href', url);
@@ -22,5 +22,4 @@ const sources = [
   '/images/sprites/icons.svg'
 ];
 
-sources.forEach( (source) => { prefetch(source); });
-
+sources.forEach( (source) => { createPrefetch(source); });
