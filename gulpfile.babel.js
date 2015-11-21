@@ -172,17 +172,23 @@ gulp.task('templates', ['scripts:inline', 'components:inline'], () => {
   )));
 });
 
+gulp.task('fonts', () =>
+  gulp.src('app/fonts/**/*')
+  .pipe($.if('**/*.woff2', $.size({title: 'fonts'})))
+  .pipe($.rev())
+  .pipe(gulp.dest('dist/fonts'))
+  .pipe($.rev.manifest('rev-manifest-fonts.json'))
+  .pipe(gulp.dest('.tmp/manifests'))
+);
+
 // Copy all other files
 gulp.task('copy', () =>
   gulp.src([
     'app/*.*',
-    '!app/*.jade',
-    'app/fonts/*'
+    '!app/*.jade'
   ], {
-    base: 'app',
     dot: true
   })
-  .pipe($.if('**/*.woff2', $.size({title: 'fonts'})))
   .pipe(gulp.dest('dist'))
 );
 
@@ -223,7 +229,7 @@ gulp.task('default', ['clean'], (done) => {
   build = true;
 
   runSequence(
-    ['styles', 'scripts', 'svg', 'copy'],
+    ['styles', 'scripts', 'svg', 'fonts', 'copy'],
     'templates',
     done
   );
