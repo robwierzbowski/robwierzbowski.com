@@ -155,6 +155,12 @@ gulp.task('svg', () =>
   )))
 );
 
+gulp.task('manifests', () =>
+  gulp.src('.tmp/manifests/rev-manifest-*.json')
+  .pipe($.extend('rev-manifest.json'))
+  .pipe(gulp.dest('.tmp/manifests'))
+);
+
 // Compile templates
 gulp.task('templates', ['scripts:inline', 'components:inline'], () => {
   return gulp.src('app/index.jade')
