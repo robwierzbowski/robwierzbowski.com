@@ -235,7 +235,10 @@ gulp.task('default', ['clean'], (done) => {
   build = true;
 
   runSequence(
-    ['styles', 'scripts', 'svg', 'fonts', 'copy'],
+    ['svg', 'fonts', 'copy'],
+    'manifests',
+    ['styles', 'scripts'],
+    'manifests',
     'templates',
     done
   );
