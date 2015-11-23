@@ -1,4 +1,6 @@
 /*global supportsWoff2:false */
+/*global revd:false */
+
 'use strict';
 
 // If the font has been loaded previously, set the loaded state right away
@@ -14,12 +16,12 @@ const createPrefetch = (url) => {
   document.head.appendChild(link);
 };
 
-const fontPath = '/fonts/';
-const fontType = supportsWoff2 ? '.woff2' : '.woff';
+const fontType = supportsWoff2 ? 'woff2' : 'woff';
+
 const sources = [
-  `${fontPath}charter-bt-roman${fontType}`,
-  `${fontPath}charter-bt-italic${fontType}`,
-  '/images/sprites/icons.svg'
+  `/fonts/${revd(`charter-bt-roman.${fontType}`)}`,
+  `/fonts/${revd(`charter-bt-italic.${fontType}`)}`,
+  `/images/sprites/${revd("icons.svg")}`
 ];
 
 sources.forEach( (source) => { createPrefetch(source); });

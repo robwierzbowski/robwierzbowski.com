@@ -1,4 +1,6 @@
 /*global FontFaceObserver:false */
+/*global revd:false */
+
 // TODO: Make FontFaceObserver an ES2015 module
 'use strict';
 
@@ -19,7 +21,7 @@ Promise.all(fontObservers).then(function() {
 //  not load external polyfill like this?
 let applySVGs = function () {
   let ajax = new XMLHttpRequest();
-  ajax.open('GET', '/images/sprites/icons.svg', true);
+  ajax.open('GET', `/images/sprites/${revd('icons.svg')}`, true);
   ajax.send();
   ajax.onload = function() {
     let SvgBank = document.querySelector('.SvgBank');

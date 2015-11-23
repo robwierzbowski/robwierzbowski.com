@@ -7,6 +7,7 @@ import browserSync from 'browser-sync';
 import gulpLoadPlugins from 'gulp-load-plugins';
 import pump from 'pumpify';
 import {argv} from 'yargs';
+import {readJSON, jadeRevd, sassRevd} from './helpers.js';
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
@@ -33,9 +34,6 @@ const day = 86400;
 const farFuture = {'Cache-Control': `max-age=${day * 365}`};
 const future = {'Cache-Control': `max-age=${day * 7}`};
 const noCache = {'Cache-Control': 'no-cache'};
-
-// Note: Fonts, SVGs are not cache busted.
-// TODO: Fix that ^^
 
 // Lint JavaScript
 gulp.task('jshint', () =>
@@ -104,11 +102,15 @@ gulp.task('scripts:inline', () =>
 // Compile and process stylesheets
 gulp.task('styles', () => {
   const SUPPORTED_BROWSERS = ['last 2 versions', '> 5%'];
+  const manifest = build ? readJSON('./.tmp/manifests/rev-manifest.json') : {};
 
   return gulp.src('app/styles/main.scss')
   .pipe($.sourcemaps.init())
   .pipe($.sass({
-    precision: 10
+    precision: 10,
+    functions: {
+      revd: (path) => sassRevd(path, manifest)
+    }
   }).on('error', $.sass.logError))
   .pipe($.changed('.tmp/styles', {hasChanged: $.changed.compareSha1Digest}))
   .pipe($.autoprefixer(SUPPORTED_BROWSERS))
@@ -163,10 +165,16 @@ gulp.task('manifests', () =>
 
 // Compile templates
 gulp.task('templates', ['scripts:inline', 'components:inline'], () => {
+  const manifest = build ? readJSON('./.tmp/manifests/rev-manifest.json') : {};
+
   return gulp.src('app/index.jade')
   .pipe($.jade({
     pretty: true,
-    basedir: '.'
+    basedir: '.',
+    locals: {
+      manifest: JSON.stringify(manifest),
+      revd: (path) => jadeRevd(path, manifest)
+    }
   }))
   .pipe(gulp.dest('.tmp'))
 
