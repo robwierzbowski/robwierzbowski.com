@@ -222,9 +222,7 @@ gulp.task('serve', ['jshint', 'scripts', 'styles', 'templates', 'svg'], () => {
   gulp.watch(paths.scripts, ['jshint', 'scripts', reload]);
   gulp.watch(paths.inlineScripts, ['jshint', 'scripts:inline', reload]);
   gulp.watch(paths.inlinecomponents, ['jshint', 'components:inline', reload]);
-
-  gulp.watch('app/images/**/*', reload);
-  gulp.watch('app/images/**/*.svg', ['svg', reload]);
+  gulp.watch('app/images/**/*', ['svg', reload]);
 });
 
 gulp.task('serve:dist', ['default'], () => {
