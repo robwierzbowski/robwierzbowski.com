@@ -77,7 +77,7 @@ gulp.task('components:inline', () =>
   // Build
   .pipe($.if(build, pump.obj(
     $.uglify({preserveComments: 'some'}),
-    $.size({title: 'inline scripts'}),
+    $.size({title: 'inline components'}),
     $.sourcemaps.write('.')
   )))
 
