@@ -203,7 +203,7 @@ gulp.task('copy', () =>
 );
 
 gulp.task('clean', (done) =>
-  del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}, done)
+  del(['.tmp', 'dist/*'], {dot: true}, done)
 );
 
 // Serve
