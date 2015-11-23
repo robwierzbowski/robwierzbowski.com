@@ -61,7 +61,6 @@ gulp.task('scripts', () =>
     $.uglify({preserveComments: 'some'}),
     $.size({title: 'scripts'}),
     $.rev(),
-    $.sourcemaps.write('.'),
     gulp.dest('dist/scripts'),
     $.rev.manifest('rev-manifest-scripts.json'),
     gulp.dest('.tmp/manifests')
@@ -75,8 +74,7 @@ gulp.task('components:inline', () =>
   // Build
   .pipe($.if(build, pump.obj(
     $.uglify({preserveComments: 'some'}),
-    $.size({title: 'inline components'}),
-    $.sourcemaps.write('.')
+    $.size({title: 'inline components'})
   )))
 
   .pipe(gulp.dest('.tmp/components/'))
@@ -92,8 +90,7 @@ gulp.task('scripts:inline', () =>
   // Build
   .pipe($.if(build, pump.obj(
     $.uglify({preserveComments: 'some'}),
-    $.size({title: 'inline scripts'}),
-    $.sourcemaps.write('.')
+    $.size({title: 'inline scripts'})
   )))
 
   .pipe(gulp.dest('.tmp/scripts'))
@@ -122,7 +119,6 @@ gulp.task('styles', () => {
     $.minifyCss(),
     $.size({title: 'styles'}),
     $.rev(),
-    $.sourcemaps.write('.'),
     gulp.dest('dist/styles'),
     $.rev.manifest('rev-manifest-styles.json'),
     gulp.dest('.tmp/manifests')
