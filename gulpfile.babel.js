@@ -23,19 +23,7 @@ const paths = {
   ]
 };
 
-// AWS vars
-const awsSettings = {
-  params: {
-    Bucket: argv.dev ? 'dev.robwierzbowski.com' : 'robwierzbowski.com'
-  },
-  region: 'us-east-1'
-};
-const day = 86400;
-const farFuture = {'Cache-Control': `max-age=${day * 365}`};
-const future = {'Cache-Control': `max-age=${day * 7}`};
-const noCache = {'Cache-Control': 'no-cache'};
-
-// Lint JavaScript
+// * JavaScript
 gulp.task('jshint', () =>
   gulp.src([
     'gulpfile.babel.js',
@@ -46,7 +34,6 @@ gulp.task('jshint', () =>
   .pipe($.if(!browserSync.active, $.jshint.reporter('fail')))
 );
 
-// Transpile and process JavaScript
 gulp.task('scripts', () =>
   gulp.src(paths.scripts)
   .pipe($.newer('.tmp/scripts/main.js'))
@@ -96,7 +83,7 @@ gulp.task('scripts:inline', () =>
   .pipe(gulp.dest('.tmp/scripts'))
 );
 
-// Compile and process stylesheets
+// * Stylesheets
 gulp.task('styles', () => {
   const SUPPORTED_BROWSERS = ['last 2 versions', '> 5%'];
   const manifest = build ? readJSON('./.tmp/manifests/rev-manifest.json') : {};
@@ -125,7 +112,7 @@ gulp.task('styles', () => {
   )));
 });
 
-// Process svgs
+// * Images
 gulp.task('svg', () =>
   gulp.src('app/images/sprites/icons/*.svg')
   .pipe($.svgstore())
@@ -153,13 +140,17 @@ gulp.task('svg', () =>
   )))
 );
 
-gulp.task('manifests', () =>
-  gulp.src('.tmp/manifests/rev-manifest-*.json')
-  .pipe($.extend('rev-manifest.json'))
+// * Fonts
+gulp.task('fonts', () =>
+  gulp.src('app/fonts/**/*')
+  .pipe($.if('**/*.woff2', $.size({title: 'fonts'})))
+  .pipe($.rev())
+  .pipe(gulp.dest('dist/fonts'))
+  .pipe($.rev.manifest('rev-manifest-fonts.json'))
   .pipe(gulp.dest('.tmp/manifests'))
 );
 
-// Compile templates
+// * Templates
 gulp.task('templates', ['scripts:inline', 'components:inline'], () => {
   const manifest = build ? readJSON('./.tmp/manifests/rev-manifest.json') : {};
 
@@ -182,16 +173,7 @@ gulp.task('templates', ['scripts:inline', 'components:inline'], () => {
   )));
 });
 
-gulp.task('fonts', () =>
-  gulp.src('app/fonts/**/*')
-  .pipe($.if('**/*.woff2', $.size({title: 'fonts'})))
-  .pipe($.rev())
-  .pipe(gulp.dest('dist/fonts'))
-  .pipe($.rev.manifest('rev-manifest-fonts.json'))
-  .pipe(gulp.dest('.tmp/manifests'))
-);
-
-// Copy all other files
+// * All other files
 gulp.task('copy', () =>
   gulp.src([
     'app/*.*',
@@ -202,11 +184,16 @@ gulp.task('copy', () =>
   .pipe(gulp.dest('dist'))
 );
 
+gulp.task('manifests', () =>
+  gulp.src('.tmp/manifests/rev-manifest-*.json')
+  .pipe($.extend('rev-manifest.json'))
+  .pipe(gulp.dest('.tmp/manifests'))
+);
+
 gulp.task('clean', (done) =>
   del(['.tmp', 'dist/*'], {dot: true}, done)
 );
 
-// Serve
 gulp.task('serve', ['jshint', 'scripts', 'styles', 'templates', 'svg'], () => {
   browserSync({
     notify: false,
@@ -246,6 +233,20 @@ gulp.task('default', ['clean'], (done) => {
   );
 });
 
+// * AWS
+// Use the --dev flag to publish to dev.robwierzbowski.com
+const awsSettings = {
+  params: {
+    Bucket: argv.dev ? 'dev.robwierzbowski.com' : 'robwierzbowski.com'
+  },
+  region: 'us-east-1'
+};
+
+const day = 86400;
+const farFuture = {'Cache-Control': `max-age=${day * 365}`};
+const future = {'Cache-Control': `max-age=${day * 7}`};
+const noCache = {'Cache-Control': 'no-cache'};
+
 gulp.task('update-gauges', () => {
   let publisher = $.awspublish.create(awsSettings);
 
@@ -255,7 +256,6 @@ gulp.task('update-gauges', () => {
   .pipe($.awspublish.reporter());
 });
 
-// Use the --dev flag to publish to dev.robwierzbowski.com
 gulp.task('publish', ['default', 'update-gauges'], () => {
   const gzipTypes = '**/*.{html,css,js,svg,ico,json,txt}';
   const cacheBustedTypes = '**/*.{css,js}';
