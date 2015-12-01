@@ -234,10 +234,10 @@ gulp.task('default', ['clean'], (done) => {
 });
 
 // * AWS
-// Use the --dev flag to publish to dev.robwierzbowski.com
+// Use the --prod flag to publish to robwierzbowski.com
 const awsSettings = {
   params: {
-    Bucket: argv.dev ? 'dev.robwierzbowski.com' : 'robwierzbowski.com'
+    Bucket: argv.prod ? 'robwierzbowski.com' : 'dev.robwierzbowski.com'
   },
   region: 'us-east-1'
 };
