@@ -17,4 +17,5 @@ $monospace-font-family: "Consolas", monospace;
 
 // * Media Queries
 $mq-coarse: "(pointer: coarse)";
-$mq-small-only: "(max-width: 30em)";
+$mq-0-small: "(max-width: 30em)";
+$mq-small-100: "(min-width: 30em)";

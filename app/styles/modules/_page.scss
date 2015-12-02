@@ -1,5 +1,4 @@
 .Page {
-  margin: 1rem;
   max-width: 35rem;
 }
 
@@ -15,4 +14,16 @@
 .Page-content {
   @extend %text;
   margin-bottom: $spacing + 0.5rem;
+}
+
+// * Modifiers
+
+.Page {
+  @media #{$mq-0-small} {
+    padding: 1rem;
+  }
+
+  @media #{$mq-small-100} {
+    padding: 1.5rem;
+  }
 }

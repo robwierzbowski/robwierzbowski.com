@@ -18,7 +18,7 @@
 // * Modifiers
 
 .Contacts-contact {
-  @media #{$mq-small-only, $mq-coarse} {
+  @media #{$mq-0-small, $mq-coarse} {
     margin-bottom: 0.25rem;
   }
 }
