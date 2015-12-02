@@ -1,5 +1,6 @@
-/*global FontFaceObserver:false */
-/*global revd:false */
+/* global FontFaceObserver:false */
+/* global revd:false */
+/* eslint-env browser */
 
 // TODO: Make FontFaceObserver an ES2015 module
 'use strict';
@@ -10,7 +11,7 @@ let fontObservers = [
   new FontFaceObserver('Charter BT', {style: 'italic'}).check()
 ];
 
-Promise.all(fontObservers).then(function() {
+Promise.all(fontObservers).then(function () {
   document.documentElement.classList.add('is-fontsLoaded');
   sessionStorage.setItem('fontsLoaded', true);
 });
@@ -23,7 +24,7 @@ let applySVGs = function () {
   let ajax = new XMLHttpRequest();
   ajax.open('GET', `/images/sprites/${revd('icons.svg')}`, true);
   ajax.send();
-  ajax.onload = function() {
+  ajax.onload = function () {
     let SvgBank = document.querySelector('.SvgBank');
     SvgBank.innerHTML = ajax.responseText;
   };

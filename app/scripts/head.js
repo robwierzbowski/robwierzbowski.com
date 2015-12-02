@@ -1,5 +1,6 @@
-/*global supportsWoff2:false */
-/*global revd:false */
+/* global supportsWoff2:false */
+/* global revd:false */
+/* eslint-env browser */
 
 'use strict';
 
@@ -21,7 +22,7 @@ const fontType = supportsWoff2 ? 'woff2' : 'woff';
 const sources = [
   `/fonts/${revd(`charter-bt-roman.${fontType}`)}`,
   `/fonts/${revd(`charter-bt-italic.${fontType}`)}`,
-  `/images/sprites/${revd("icons.svg")}`
+  `/images/sprites/${revd('icons.svg')}`
 ];
 
-sources.forEach( (source) => { createPrefetch(source); });
+sources.forEach((source) => { createPrefetch(source); });

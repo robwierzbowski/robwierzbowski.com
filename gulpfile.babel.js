@@ -27,8 +27,9 @@ const paths = {
 gulp.task('lint', () =>
   gulp.src([
     'gulpfile.babel.js',
+    'helpers.js',
     'app/scripts/**/*.js'
-   ])
+  ])
   .pipe($.eslint())
   .pipe($.eslint.format())
   .pipe($.if(!browserSync.active, $.eslint.failOnError()))
@@ -117,8 +118,8 @@ gulp.task('svg', () =>
   gulp.src('app/images/sprites/icons/*.svg')
   .pipe($.svgstore())
   .pipe($.cheerio({
-      run: function ($) { $('[fill]').removeAttr('fill'); },
-      parserOptions: {xmlMode: true}
+    run: function ($) { $('[fill]').removeAttr('fill'); },
+    parserOptions: {xmlMode: true}
   }))
   .pipe(gulp.dest('.tmp/images/sprites'))
 
