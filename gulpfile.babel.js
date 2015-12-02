@@ -26,8 +26,7 @@ const paths = {
 // * JavaScript
 gulp.task('lint', () =>
   gulp.src([
-    'gulpfile.babel.js',
-    'helpers.js',
+    '*.js',
     'app/scripts/**/*.js'
   ])
   .pipe($.eslint())
