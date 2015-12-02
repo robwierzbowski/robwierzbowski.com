@@ -24,14 +24,14 @@ const paths = {
 };
 
 // * JavaScript
-gulp.task('jshint', () =>
+gulp.task('lint', () =>
   gulp.src([
     'gulpfile.babel.js',
     'app/scripts/**/*.js'
    ])
-  .pipe($.jshint())
-  .pipe($.jshint.reporter('jshint-stylish'))
-  .pipe($.if(!browserSync.active, $.jshint.reporter('fail')))
+  .pipe($.eslint())
+  .pipe($.eslint.format())
+  .pipe($.if(!browserSync.active, $.eslint.failOnError()))
 );
 
 gulp.task('scripts', () =>
@@ -194,7 +194,7 @@ gulp.task('clean', (done) =>
   del(['.tmp', 'dist/*'], {dot: true}, done)
 );
 
-gulp.task('serve', ['jshint', 'scripts', 'styles', 'templates', 'svg'], () => {
+gulp.task('serve', ['lint', 'scripts', 'styles', 'templates', 'svg'], () => {
   browserSync({
     notify: false,
     logPrefix: 'BrowserSync',
@@ -206,9 +206,9 @@ gulp.task('serve', ['jshint', 'scripts', 'styles', 'templates', 'svg'], () => {
     ['templates', reload]
   );
   gulp.watch('app/styles/**/*.scss', ['styles', reload]);
-  gulp.watch(paths.scripts, ['jshint', 'scripts', reload]);
-  gulp.watch(paths.inlineScripts, ['jshint', 'scripts:inline', reload]);
-  gulp.watch(paths.inlinecomponents, ['jshint', 'components:inline', reload]);
+  gulp.watch(paths.scripts, ['lint', 'scripts', reload]);
+  gulp.watch(paths.inlineScripts, ['lint', 'scripts:inline', reload]);
+  gulp.watch(paths.inlinecomponents, ['lint', 'components:inline', reload]);
   gulp.watch('app/images/**/*', ['svg', reload]);
 });
 
