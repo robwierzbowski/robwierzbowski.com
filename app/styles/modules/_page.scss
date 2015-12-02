@@ -11,7 +11,7 @@
   @include one();
 }
 
-.Page-content {
+.Page-intro {
   @extend %text;
   margin-bottom: $spacing + 0.5rem;
 }
