@@ -1,4 +1,4 @@
-extends ./templates/layouts/page
+extends /app/templates/layouts/page
 
 block main
   main
@@ -10,6 +10,18 @@ block main
       p You can find me living and working in Pittsburgh, PA.
 
       p I'm currently available for consulting and full time employment. #[a.Cta(href="mailto:hello@robwierzbowski.com", target="_blank") If you#{"'"}d like to work together, let#{"'"}s talk.]
+
+    .Page-writing
+      h2.Page-subtitle Writing
+
+      ol.Page-summaries
+        li.Summary
+          h3.Summary-title Some clever article title
+          time(datetime="2015-12-2").Summary-date December 2, 2015
+          p.Summary-content
+            | Hey this is a bunch of article text for this great article. Don't you want to read this article now?
+            span.Summary-elipsis ...
+            a(href="#").Summary-more +
 
     .Page-contacts
       ul.Contacts
