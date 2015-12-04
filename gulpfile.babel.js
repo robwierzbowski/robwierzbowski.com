@@ -150,6 +150,27 @@ gulp.task('fonts', () =>
   .pipe(gulp.dest('.tmp/manifests'))
 );
 
+// Posts
+import jsonMatter from 'json-front-matter';
+
+gulp.task('posts', () => {
+  return gulp.src('app/content/**/*.jade')
+  .pipe($.tap(function (file) {
+    let contents = file.contents.toString();
+    let result = jsonMatter.parse(contents);
+    file.original = file.contents;
+    file.data = result.attributes;
+    file.contents = new Buffer(result.body);
+  }))
+  .pipe(gulp.dest('.tmp'));
+
+  // Now we need to:
+  // - parse markdown
+  // - Add to data
+  // - write JSON files
+  // - write static HTML
+});
+
 // * Templates
 gulp.task('templates', ['scripts:inline', 'components:inline'], () => {
   const manifest = build ? readJSON('./.tmp/manifests/rev-manifest.json') : {};
