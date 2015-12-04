@@ -7,8 +7,8 @@
 
 // * Show fallback font until custom fonts are loaded.
 let fontObservers = [
-  new FontFaceObserver('Charter BT').check(),
-  new FontFaceObserver('Charter BT', {style: 'italic'}).check()
+  new FontFaceObserver('Charter BT').check(null, 7000),
+  new FontFaceObserver('Charter BT', {style: 'italic'}).check(null, 7000)
 ];
 
 Promise.all(fontObservers).then(function () {
