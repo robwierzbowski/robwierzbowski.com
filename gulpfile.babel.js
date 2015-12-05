@@ -1,5 +1,6 @@
 'use strict';
 
+import fs from 'fs';
 import gulp from 'gulp';
 import del from 'del';
 import runSequence from 'run-sequence';
@@ -162,6 +163,8 @@ gulp.task('fonts', () =>
 
 // Posts
 gulp.task('posts', () => {
+  const jadeTemplate = fs.readFileSync('./app/templates/layouts/post.jade');
+
   return gulp.src('app/content/**/*.md', {base: 'app'})
   .pipe($.tap(function (file) {
     let contents = file.contents.toString();
@@ -170,13 +173,20 @@ gulp.task('posts', () => {
     data.body = marked(body);
 
     file.original = file.contents;
+    file.data = data;
     file.contents = new Buffer(JSON.stringify(data));
   }))
   .pipe($.rename({extname: '.json'}))
+  .pipe(gulp.dest('.tmp'))
+  .pipe($.tap(function (file) {
+    file.contents = jadeTemplate;
+  }))
+  .pipe($.jade({pretty: true}))
   .pipe(gulp.dest('.tmp'));
 
-  // Now we need to:
-  // - write static HTML with Jade template
+  // TODO:
+  // - Put posts in a page layout
+  // - ...that correctly cache busts assets
 });
 
 // * Templates
