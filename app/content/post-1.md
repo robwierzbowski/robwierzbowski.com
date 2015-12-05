@@ -7,5 +7,6 @@
   "postJs": "./post.js"
 }}}
 
-:markdown
-  Well here we are writing a big ol' article. Let's add some "quotes", and maybe a [link](http://robwierzbowski.com).
+# Hey YAAAAAA!!!!!
+
+Well here we are writing a big ol' article. Let's add some "quotes", and maybe a [link](http://robwierzbowski.com).

@@ -161,27 +161,21 @@ gulp.task('fonts', () =>
 );
 
 // Posts
-
 gulp.task('posts', () => {
-  return gulp.src('app/content/**/*.jade')
+  return gulp.src('app/content/**/*.md', {base: 'app'})
   .pipe($.tap(function (file) {
     let contents = file.contents.toString();
-    let result = matter.parse(contents);
+    let {attributes: data, body} = matter.parse(contents);
+
+    data.body = marked(body);
 
     file.original = file.contents;
-    file.data = result.attributes || {};
-    file.contents = new Buffer(result.body);
+    file.contents = new Buffer(JSON.stringify(data));
   }))
-  .pipe($.jade({pretty: true})) // Maybe do this with marked directly, dry up task.
-  .pipe($.tap(function (file) {
-    file.data.contents = file.contents.toString();
-    file.contents = new Buffer(JSON.stringify(file.data));
-  }))
+  .pipe($.rename({extname: '.json'}))
   .pipe(gulp.dest('.tmp'));
 
   // Now we need to:
-  // - rename files to JSON
-  // - write JSON files
   // - write static HTML with Jade template
 });
 
