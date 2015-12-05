@@ -5,9 +5,19 @@ import del from 'del';
 import runSequence from 'run-sequence';
 import browserSync from 'browser-sync';
 import gulpLoadPlugins from 'gulp-load-plugins';
+import jade from 'jade';
+import marked from 'marked';
+import matter from 'json-front-matter';
 import pump from 'pumpify';
 import {argv} from 'yargs';
 import {readJSON, jadeRevd, sassRevd} from './helpers.js';
+
+marked.setOptions({
+  breaks: true,
+  smartypants: false
+});
+
+jade.filters.markdown = marked;
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
@@ -151,24 +161,28 @@ gulp.task('fonts', () =>
 );
 
 // Posts
-import jsonMatter from 'json-front-matter';
 
 gulp.task('posts', () => {
   return gulp.src('app/content/**/*.jade')
   .pipe($.tap(function (file) {
     let contents = file.contents.toString();
-    let result = jsonMatter.parse(contents);
+    let result = matter.parse(contents);
+
     file.original = file.contents;
-    file.data = result.attributes;
+    file.data = result.attributes || {};
     file.contents = new Buffer(result.body);
+  }))
+  .pipe($.jade({pretty: true})) // Maybe do this with marked directly, dry up task.
+  .pipe($.tap(function (file) {
+    file.data.contents = file.contents.toString();
+    file.contents = new Buffer(JSON.stringify(file.data));
   }))
   .pipe(gulp.dest('.tmp'));
 
   // Now we need to:
-  // - parse markdown
-  // - Add to data
+  // - rename files to JSON
   // - write JSON files
-  // - write static HTML
+  // - write static HTML with Jade template
 });
 
 // * Templates
@@ -177,6 +191,7 @@ gulp.task('templates', ['scripts:inline', 'components:inline'], () => {
 
   return gulp.src('app/index.jade')
   .pipe($.jade({
+    jade: jade,
     pretty: true,
     basedir: '.',
     locals: {
