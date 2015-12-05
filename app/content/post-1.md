@@ -3,8 +3,8 @@
   "date": "2015-12-3",
   "summary": "Let's see if we can do this in summary...",
   "description": "some descript for Google",
-  "postCss": "./post.css",
-  "postJs": "./post.js"
+  "css": "app/content/post1.css",
+  "js": false
 }}}
 
 # Hey YAAAAAA!!!!!

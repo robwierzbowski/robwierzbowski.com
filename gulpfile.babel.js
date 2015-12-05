@@ -172,6 +172,14 @@ gulp.task('posts', () => {
 
     data.body = marked(body);
 
+    if (data.css) {
+      data.css = fs.readFileSync(data.css, 'utf8');
+    }
+
+    if (data.js) {
+      data.js = fs.readFileSync(data.js, 'utf8');
+    }
+
     file.original = file.contents;
     file.data = data;
     file.contents = new Buffer(JSON.stringify(data));
