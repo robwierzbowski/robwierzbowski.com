@@ -10,6 +10,7 @@ import jade from 'jade';
 import marked from 'marked';
 import matter from 'json-front-matter';
 import pump from 'pumpify';
+import assign from 'object-assign';
 import {argv} from 'yargs';
 import {readJSON, jadeRevd, sassRevd} from './helpers.js';
 
@@ -162,10 +163,9 @@ gulp.task('fonts', () =>
 );
 
 // Posts
-gulp.task('posts', () => {
-  const jadeTemplate = fs.readFileSync('./app/templates/layouts/post.jade');
-
+gulp.task('api', () => {
   return gulp.src('app/content/**/*.md', {base: 'app'})
+  .pipe($.rename({extname: '.json'}))
   .pipe($.tap(function (file) {
     let contents = file.contents.toString();
     let {attributes: data, body} = matter.parse(contents);
@@ -184,32 +184,31 @@ gulp.task('posts', () => {
     file.data = data;
     file.contents = new Buffer(JSON.stringify(data));
   }))
-  .pipe($.rename({extname: '.json'}))
-  .pipe(gulp.dest('.tmp'))
-  .pipe($.tap(function (file) {
-    file.contents = jadeTemplate;
-  }))
-  .pipe($.jade({pretty: true}))
   .pipe(gulp.dest('.tmp'));
-
-  // TODO:
-  // - Put posts in a page layout
-  // - ...that correctly cache busts assets
 });
 
 // * Templates
-gulp.task('templates', ['scripts:inline', 'components:inline'], () => {
+gulp.task('templates', ['api', 'scripts:inline', 'components:inline'], () => {
+  const postTpl = fs.readFileSync('./app/templates/layouts/post.jade');
   const manifest = build ? readJSON('./.tmp/manifests/rev-manifest.json') : {};
 
-  return gulp.src('app/index.jade')
+  return gulp.src('.tmp/content/**/*.json', {base: '.tmp'})
+  .pipe($.rename({extname: '.jade'}))
+  .pipe($.tap(function (file) {
+    file.data = JSON.parse(file.contents.toString());
+    file.contents = postTpl;
+  }))
+  .pipe($.addSrc('app/index.jade'))
+  .pipe($.tap(function (file) {
+    file.data = assign({}, file.data, {
+      manifest: JSON.stringify(manifest),
+      revd: (path) => jadeRevd(path, manifest)
+    });
+  }))
   .pipe($.jade({
     jade: jade,
     pretty: true,
-    basedir: '.',
-    locals: {
-      manifest: JSON.stringify(manifest),
-      revd: (path) => jadeRevd(path, manifest)
-    }
+    basedir: '.'
   }))
   .pipe(gulp.dest('.tmp'))
 
