@@ -7,6 +7,6 @@ if js
 article.Post
   header.Post-header
     h1.Post-title= title
-    time(datetime="2015-12-2").Post-date= date
+    time(datetime=date).Post-date= formatDate(date)
 
   .Post-body!= body

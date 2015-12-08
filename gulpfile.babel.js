@@ -11,6 +11,7 @@ import marked from 'marked';
 import matter from 'json-front-matter';
 import pump from 'pumpify';
 import {argv} from 'yargs';
+import dateFormat from 'dateformat';
 import {readJSON, jadeRevd, sassRevd} from './helpers.js';
 
 marked.setOptions({
@@ -206,7 +207,11 @@ gulp.task('html', ['api', 'scripts:inline', 'components:inline'], () => {
     file.data = file.data || {};
     file.data.posts = postsData;
     file.data.manifest = JSON.stringify(manifest);
+
+    // Jade functions
     file.data.revd = (path) => jadeRevd(path, manifest);
+    file.data.formatDate = (date) =>
+      dateFormat(new Date(date), 'mmmm d, yyyy');
   }))
 
   // Compile Jade

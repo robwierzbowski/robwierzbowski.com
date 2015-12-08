@@ -18,7 +18,7 @@ block main
         each post in posts
           li.Summary
             h3.Summary-title= post.title
-            time(datetime="#{post.date}").Summary-date= post.date
+            time(datetime="#{post.date}").Summary-date= formatDate(post.date)
             p.Summary-content
               | #{post.summary}
               span.Summary-elipsis ...
