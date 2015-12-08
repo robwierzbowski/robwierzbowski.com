@@ -1,12 +1,16 @@
-if css
-  style !{css}
+extends /app/templates/layouts/page
 
-if js
-  style !{js}
+block main
+  main
+    if css
+      style !{css}
 
-article.Post
-  header.Post-header
-    h1.Post-title= title
-    time(datetime=date).Post-date= formatDate(date)
+    if js
+      style !{js}
 
-  .Post-body!= body
+    article.Post
+      header.Post-header
+        h1.Post-title= title
+        time(datetime=date).Post-date= formatDate(date)
+
+      .Post-body!= body
