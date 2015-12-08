@@ -1,5 +1,6 @@
 {{{
   "title": "One Sick Post",
+  "permalink": "content/post-1.html",
   "date": "2015-12-3",
   "summary": "Let's see if we can do this in summary...",
   "description": "some descript for Google",

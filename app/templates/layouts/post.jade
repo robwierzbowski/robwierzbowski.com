@@ -10,7 +10,8 @@ block main
 
     article.Post
       header.Post-header
-        h1.Post-title= title
+        h1.Post-title
+          a.Post-titleLink(href="#{permalink}")= title
         time(datetime=date).Post-date= formatDate(date)
 
       .Post-body!= body
