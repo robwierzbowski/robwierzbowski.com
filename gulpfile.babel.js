@@ -164,7 +164,6 @@ gulp.task('fonts', () =>
 // * JSON api
 gulp.task('api', () => {
   return gulp.src('app/content/**/*.md', {base: 'app'})
-  .pipe($.rename({extname: '.json'}))
   .pipe($.tap(function (file) {
     let {attributes: data, body} = matter.parse(file.contents.toString());
 
@@ -175,6 +174,7 @@ gulp.task('api', () => {
     file.data = data;
     file.contents = new Buffer(JSON.stringify(data));
   }))
+  .pipe($.rename({extname: '.json'}))
   .pipe(gulp.dest('.tmp'))
   .pipe($.concatJson('content/posts.json'))
   .pipe(gulp.dest('.tmp'));
@@ -192,11 +192,11 @@ gulp.task('html', ['api', 'scripts:inline', 'components:inline'], () => {
   ], {base: '.tmp'})
 
   // Process JSON into jade templates with data objects
-  .pipe($.rename({extname: '.jade'}))
   .pipe($.tap(function (file) {
     file.data = JSON.parse(file.contents.toString());
     file.contents = postTpl;
   }))
+  .pipe($.rename({extname: '.jade'}))
 
   // Add static jade templates
   .pipe($.addSrc('app/index.jade'))
