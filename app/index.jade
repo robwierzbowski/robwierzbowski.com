@@ -15,13 +15,14 @@ block main
       h2.Page-subtitle Writing
 
       ol.Page-summaries
-        li.Summary
-          h3.Summary-title Some clever article title
-          time(datetime="2015-12-2").Summary-date December 2, 2015
-          p.Summary-content
-            | Hey this is a bunch of article text for this great article. Don't you want to read this article now?
-            span.Summary-elipsis ...
-            a(href="#").Summary-more +
+        each post in posts
+          li.Summary
+            h3.Summary-title= post.title
+            time(datetime="#{post.date}").Summary-date= post.date
+            p.Summary-content
+              | #{post.summary}
+              span.Summary-elipsis ...
+              a(href="#").Summary-more +
 
     .Page-contacts
       ul.Contacts
