@@ -10,7 +10,6 @@ import jade from 'jade';
 import marked from 'marked';
 import matter from 'json-front-matter';
 import pump from 'pumpify';
-import assign from 'object-assign';
 import {argv} from 'yargs';
 import {readJSON, jadeRevd, sassRevd} from './helpers.js';
 
@@ -162,49 +161,48 @@ gulp.task('fonts', () =>
   .pipe(gulp.dest('.tmp/manifests'))
 );
 
-// Posts
+// * JSON api
 gulp.task('api', () => {
   return gulp.src('app/content/**/*.md', {base: 'app'})
   .pipe($.rename({extname: '.json'}))
   .pipe($.tap(function (file) {
-    let contents = file.contents.toString();
-    let {attributes: data, body} = matter.parse(contents);
+    let {attributes: data, body} = matter.parse(file.contents.toString());
 
+    data.css = data.css ? fs.readFileSync(data.css, 'utf8') : false;
+    data.js = data.js ? fs.readFileSync(data.js, 'utf8') : false;
     data.body = marked(body);
 
-    if (data.css) {
-      data.css = fs.readFileSync(data.css, 'utf8');
-    }
-
-    if (data.js) {
-      data.js = fs.readFileSync(data.js, 'utf8');
-    }
-
-    file.original = file.contents;
     file.data = data;
     file.contents = new Buffer(JSON.stringify(data));
   }))
   .pipe(gulp.dest('.tmp'));
 });
 
-// * Templates
-gulp.task('templates', ['api', 'scripts:inline', 'components:inline'], () => {
+// * HTML
+gulp.task('html', ['api', 'scripts:inline', 'components:inline'], () => {
   const postTpl = fs.readFileSync('./app/templates/layouts/post.jade');
   const manifest = build ? readJSON('./.tmp/manifests/rev-manifest.json') : {};
 
   return gulp.src('.tmp/content/**/*.json', {base: '.tmp'})
+
+  // Process JSON into jade templates with data objects
   .pipe($.rename({extname: '.jade'}))
   .pipe($.tap(function (file) {
     file.data = JSON.parse(file.contents.toString());
     file.contents = postTpl;
   }))
+
+  // Add static jade templates
   .pipe($.addSrc('app/index.jade'))
+
+  // Add data for all jade templates
   .pipe($.tap(function (file) {
-    file.data = assign({}, file.data, {
-      manifest: JSON.stringify(manifest),
-      revd: (path) => jadeRevd(path, manifest)
-    });
+    file.data = file.data || {};
+    file.data.manifest = JSON.stringify(manifest);
+    file.data.revd = (path) => jadeRevd(path, manifest);
   }))
+
+  // Compile Jade
   .pipe($.jade({
     jade: jade,
     pretty: true,
@@ -241,7 +239,7 @@ gulp.task('clean', (done) =>
   del(['.tmp', 'dist/*'], {dot: true}, done)
 );
 
-gulp.task('serve', ['lint', 'scripts', 'styles', 'templates', 'svg'], () => {
+gulp.task('serve', ['lint', 'scripts', 'styles', 'html', 'svg'], () => {
   browserSync({
     notify: false,
     logPrefix: 'BrowserSync',
@@ -250,7 +248,7 @@ gulp.task('serve', ['lint', 'scripts', 'styles', 'templates', 'svg'], () => {
 
   gulp.watch(
     ['app/**/*.jade'].concat(paths.inlineScripts, paths.inlineComponents),
-    ['templates', reload]
+    ['html', reload]
   );
   gulp.watch('app/styles/**/*.scss', ['styles', reload]);
   gulp.watch(paths.scripts, ['lint', 'scripts', reload]);
@@ -275,7 +273,7 @@ gulp.task('default', ['clean'], (done) => {
     'manifests',
     ['styles', 'scripts'],
     'manifests',
-    'templates',
+    'html',
     done
   );
 });

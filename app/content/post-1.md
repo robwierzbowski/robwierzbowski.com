@@ -3,7 +3,7 @@
   "date": "2015-12-3",
   "summary": "Let's see if we can do this in summary...",
   "description": "some descript for Google",
-  "css": "app/content/post1.css",
+  "css": "app/content/post-1.css",
   "js": false
 }}}
 
