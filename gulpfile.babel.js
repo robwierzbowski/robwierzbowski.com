@@ -175,15 +175,21 @@ gulp.task('api', () => {
     file.data = data;
     file.contents = new Buffer(JSON.stringify(data));
   }))
+  .pipe(gulp.dest('.tmp'))
+  .pipe($.concatJson('content/posts.json'))
   .pipe(gulp.dest('.tmp'));
 });
 
 // * HTML
 gulp.task('html', ['api', 'scripts:inline', 'components:inline'], () => {
   const postTpl = fs.readFileSync('./app/templates/layouts/post.jade');
+  const postsData = readJSON('./.tmp/content/posts.json');
   const manifest = build ? readJSON('./.tmp/manifests/rev-manifest.json') : {};
 
-  return gulp.src('.tmp/content/**/*.json', {base: '.tmp'})
+  return gulp.src([
+    '.tmp/content/**/*.json',
+    '!.tmp/content/posts.json'
+  ], {base: '.tmp'})
 
   // Process JSON into jade templates with data objects
   .pipe($.rename({extname: '.jade'}))
@@ -198,6 +204,7 @@ gulp.task('html', ['api', 'scripts:inline', 'components:inline'], () => {
   // Add data for all jade templates
   .pipe($.tap(function (file) {
     file.data = file.data || {};
+    file.data.posts = postsData;
     file.data.manifest = JSON.stringify(manifest);
     file.data.revd = (path) => jadeRevd(path, manifest);
   }))
