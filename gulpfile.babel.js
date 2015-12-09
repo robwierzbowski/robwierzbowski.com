@@ -170,8 +170,6 @@ gulp.task('api', () => {
 
     data.css = data.css ? fs.readFileSync(data.css, 'utf8') : false;
     data.js = data.js ? fs.readFileSync(data.js, 'utf8') : false;
-    data.permalink = `http://robwierzbowski.com/#{data.permalink}`;
-
     data.body = marked(body);
 
     file.data = data;
