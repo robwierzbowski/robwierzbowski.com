@@ -16,7 +16,7 @@ import {readJSON, jadeRevd, sassRevd} from './helpers.js';
 
 marked.setOptions({
   breaks: true,
-  smartypants: false
+  smartypants: true
 });
 
 jade.filters.markdown = marked;
