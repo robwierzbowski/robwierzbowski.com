@@ -269,7 +269,7 @@ gulp.task('serve', ['lint', 'scripts', 'styles', 'html', 'svg'], () => {
   });
 
   gulp.watch(
-    ['app/**/*.jade'].concat(paths.inlineScripts, paths.inlineComponents),
+    ['app/**/*.jade', 'app/content/**/*.md'].concat(paths.inlineScripts, paths.inlineComponents),
     ['html', reload]
   );
   gulp.watch('app/styles/**/*.scss', ['styles', reload]);
