@@ -1,42 +1,22 @@
 extends /app/templates/layouts/page
 
-block main
-  main
-    h1.Page-title Rob Wierzbowski
+block append main
+  .Page-intro.-text
+    p I'm a design-minded developer focusing on front-end systems, process, and teamwork. I automate everything, love the good parts of JavaScript, and actually think CSS is awesome.
 
-    .Page-intro.-text
-      p I'm a design-minded developer focusing on front-end systems, process, and teamwork. I automate everything, love the good parts of JavaScript, and actually think CSS is awesome.
+    p You can find me living and working in Pittsburgh, PA.
 
-      p You can find me living and working in Pittsburgh, PA.
+    p I'm currently available for consulting and full time employment. #[a.Cta(href="mailto:hello@robwierzbowski.com", target="_blank") If you#{"'"}d like to work together, let#{"'"}s talk.]
 
-      p I'm currently available for consulting and full time employment. #[a.Cta(href="mailto:hello@robwierzbowski.com", target="_blank") If you#{"'"}d like to work together, let#{"'"}s talk.]
+  .Page-writing
+    h2.Page-subtitle Writing
 
-    .Page-writing
-      h2.Page-subtitle Writing
-
-      ol.Page-summaries
-        each post in posts
-          li.Summary
-            h3.Summary-title= post.title
-            time(datetime="#{post.date}").Summary-date= formatDate(post.date)
-            p.Summary-content
-              | #{post.summary}
-              span.Summary-elipsis ...
-              a(href="#").Summary-more +
-
-    .Page-contacts
-      ul.Contacts
-        li.Contacts-contact.-email
-          svg.Contacts-icon(role="img", aria-label="Email")
-            use("xlink:href"="#icon-mail")
-          a.Contacts-link(href="mailto:hello@robwierzbowski.com", target="_blank") hello@robwierzbowski.com
-
-        li.Contacts-contact.-twitter
-          svg.Contacts-icon(role="img", aria-label="Twitter")
-            use("xlink:href"="#icon-twitter")
-          a.Contacts-link(href="https://twitter.com/robwierzbowski") @robwierzbowski
-
-        li.Contacts-contact.-github
-          svg.Contacts-icon(role="img", aria-label="Github")
-            use("xlink:href"="#icon-github")
-          a.Contacts-link(href="https://github.com/robwierzbowski") robwierzbowski
+    ol.Page-summaries
+      each post in posts
+        li.Summary
+          h3.Summary-title
+            a(href="#{post.permalink}")= post.title
+          time(datetime="#{post.date}").Summary-date= formatDate(post.date)
+          p.Summary-content
+            | #{post.summary}
+            a(href="#{post.permalink}").Summary-more +

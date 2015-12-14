@@ -1,17 +1,17 @@
 extends /app/templates/layouts/page
 
-block main
-  main
-    if css
-      style !{css}
+block append open
+  if css
+    style !{css}
 
-    if js
-      style !{js}
+  if js
+    script !{js}
 
-    article.Post
-      header.Post-header
-        h1.Post-title
-          a.Post-titleLink(href="#{permalink}")= title
-        time(datetime=date).Post-date= formatDate(date)
+block append main
+  article.Post
+    header.Post-header
+      h1.Post-title
+        a.Post-titleLink(href="#{permalink}")= title
+      time(datetime=date).Post-date= formatDate(date)
 
-      .Post-body!= body
+    .Post-body!= body
