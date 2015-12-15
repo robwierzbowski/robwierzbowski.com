@@ -16,6 +16,12 @@
 
 body {
   margin: 0;
+
+  // * Global type enhancements
+  // Note: The current version of Charter BT doesn't actually use any of these.
+  // A couple bytes for future proofing, can remove if I decide to get more
+  // agressive with performance.
+  font-variant-ligatures: common-ligatures contextual;
 }
 
 audio,
