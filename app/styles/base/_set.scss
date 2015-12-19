@@ -94,8 +94,8 @@ pre {
 
 :root {
   font-family: $serif-fallback-family;
-  font-size: 112.5%; // 18pxx
-  line-height: 1.4; // TODO: should this be in reset?
+  font-size: 118.75%; // 19px
+  line-height: 1.45;
   font-synthesis: none;
 
   &.is-fontsLoaded {
