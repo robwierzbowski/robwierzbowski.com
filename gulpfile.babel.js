@@ -43,7 +43,7 @@ gulp.task('lint', () =>
   ])
   .pipe($.eslint())
   .pipe($.eslint.format())
-  .pipe($.if(!browserSync.active, $.eslint.failOnError()))
+  .pipe($.if(!browserSync.active, $.eslint.failAfterError()))
 );
 
 gulp.task('scripts', () =>
