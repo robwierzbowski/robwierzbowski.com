@@ -115,7 +115,7 @@ gulp.task('styles', () => {
 
   // Build
   .pipe($.if(build, pump.obj(
-    $.minifyCss(),
+    $.cssnano(),
     $.size({title: 'styles'}),
     $.rev(),
     gulp.dest('dist/styles'),
@@ -224,7 +224,17 @@ gulp.task('html', ['api', 'scripts:inline', 'components:inline'], () => {
 
   // Build
   .pipe($.if(build, pump.obj(
-    $.minifyHtml(),
+    $.htmlmin({
+      removeComments: true,
+      collapseWhitespace: true,
+      collapseBooleanAttributes: true,
+      removeAttributeQuotes: true,
+      removeRedundantAttributes: true,
+      removeEmptyAttributes: true,
+      removeScriptTypeAttributes: true,
+      removeStyleLinkTypeAttributes: true,
+      removeOptionalTags: true
+    }),
     $.size({title: 'html'}),
     gulp.dest('dist')
   )));
