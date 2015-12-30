@@ -200,7 +200,7 @@ gulp.task('html', ['api', 'scripts:inline', 'components:inline'], () => {
   .pipe($.rename({extname: '.jade'}))
 
   // Add static jade templates
-  .pipe($.addSrc('app/index.jade'))
+  .pipe($.addSrc('app/*.jade'))
 
   // Add data for all jade templates
   .pipe($.tap(function (file) {
