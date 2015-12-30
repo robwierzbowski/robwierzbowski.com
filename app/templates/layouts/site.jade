@@ -4,24 +4,24 @@ html(lang="en")
     block head
       include /app/templates/partials/head.jade
 
-  body.Page
-    block open
-      .Page-svgBank
+  body.l
+    block opener
+      .SvgBank
 
-    block header
-      header.Page-header.-internal
-        strong.Page-title
-          a(href='/') Rob Wierzbowski
+    header.l-header
+      block header
+        strong.SiteTitle.-interal
+          a.SiteTitle-link(href='/') Rob Wierzbowski
 
-      include /app/templates/partials/nav.jade
+        include /app/templates/partials/nav.jade
 
-    block main
-      main.Page-main
+    main.l-content
+      block main
 
-    block footer
-      footer.Page-contacts
+    footer.l-footer
+      block footer
         include /app/templates/partials/contacts.jade
 
-    block close
+    block closer
       include /app/templates/partials/scripts.jade
       include /app/templates/partials/gauges.jade

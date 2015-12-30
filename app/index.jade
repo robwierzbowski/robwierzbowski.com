@@ -1,27 +1,25 @@
 extends /app/templates/layouts/site
 
 block header
-  header.Page-header.-home
-    h1.Page-title
-      a(href='/') Rob Wierzbowski
+  h1.SiteTitle.-home
+    a.SiteTitle-link(href='/') Rob Wierzbowski
 
 block append main
-  .Page-intro.-text
-    p I'm a design-minded developer focusing on front-end systems, process, and teamwork. I automate everything, love the good parts of JavaScript, and actually think CSS is awesome.
+  article.Page
+    .Page-section.-text
+      p I'm a design-minded developer focusing on front-end systems, process, and teamwork. I automate everything, love the good parts of JavaScript, and actually think CSS is awesome.
 
-    p You can find me living and working in Pittsburgh, PA.
+      p You can find me living and working in Pittsburgh, PA.
 
-    p I'm currently available for consulting and full time employment. #[a.Cta(href="mailto:hello@robwierzbowski.com", target="_blank") If you#{"'"}d like to work together, let#{"'"}s talk.]
+      p I'm currently available for consulting and full time employment. #[a.Cta(href="mailto:hello@robwierzbowski.com", target="_blank") If you#{"'"}d like to work together, let#{"'"}s talk.]
 
-  .Page-writing
-    h2.Page-subtitle Writing
-
-    ol.Page-summaries
-      each post in posts
-        li.Summary
-          h3.Summary-title
-            a(href="#{post.permalink}")= post.title
-          time(datetime="#{post.date}").Summary-date= formatDate(post.date)
-          p.Summary-content
-            | #{post.summary}
-            a(href="#{post.permalink}").Summary-more +
+    .Page-section
+      ol.Page-summaries
+        each post in posts
+          li.Summary
+            h3.Summary-title
+              a.Summary-link(href="#{post.permalink}")= post.title
+            time(datetime="#{post.date}").Summary-date= formatDate(post.date)
+            p.Summary-content
+              | #{post.summary}
+              a(href="#{post.permalink}").Summary-more +

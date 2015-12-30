@@ -25,7 +25,7 @@ let applySVGs = function () {
   ajax.open('GET', `/images/sprites/${revd('icons.svg')}`, true);
   ajax.send();
   ajax.onload = function () {
-    let SvgBank = document.querySelector('.Page-svgBank');
+    let SvgBank = document.querySelector('.SvgBank');
     SvgBank.innerHTML = ajax.responseText;
   };
 };

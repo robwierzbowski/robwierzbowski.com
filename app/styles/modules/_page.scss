@@ -1,33 +1,11 @@
-.Page {
-  max-width: 35rem;
+.Page-section {
+  margin-bottom: $spacing * 2.5;
 }
 
-.Page-svgBank {
-  display: none;
-}
-
-.Page-title,
-.Page-contacts {
-  margin-bottom: $spacing;
-}
-
-.Page-title {
-  @include one();
-}
-
-.Page-intro {
-  @extend %text;
-  margin-bottom: $spacing + 0.5rem;
-}
-
-// * Modifiers
-
-.Page {
-  @media #{$mq-0-small} {
-    padding: 1rem;
-  }
-
-  @media #{$mq-small-100} {
-    padding: 1.5rem;
+.Page-section {
+  &.-text {
+    @extend %text;
   }
 }
+
+.Page-summaries {}
