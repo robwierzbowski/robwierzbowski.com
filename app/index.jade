@@ -15,13 +15,13 @@ block append main
 
       //- TODO: Add a link to the about page in content here.
 
-    .Page-section
-      ol.Page-summaries
-        each post in posts
-          li.Summary
-            h3.Summary-title
-              a.Summary-link(href="#{post.permalink}")= post.title
-            time(datetime="#{post.date}").Summary-date= formatDate(post.date)
-            p.Summary-content
-              | #{post.summary}
-              a(href="#{post.permalink}").Summary-more +
+    //- .Page-section
+    //-   ol.Page-summaries
+    //-     each post in posts
+    //-       li.Summary
+    //-         h3.Summary-title
+    //-           a.Summary-link(href="#{post.permalink}")= post.title
+    //-         time(datetime="#{post.date}").Summary-date= formatDate(post.date)
+    //-         p.Summary-content
+    //-           | #{post.summary}
+    //-           a(href="#{post.permalink}").Summary-more +
